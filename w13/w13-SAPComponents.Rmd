@@ -1,0 +1,204 @@
+---
+title: 'A Brief Description of Basic Components of A SAP'
+author: "Cheng Peng"
+date: " "
+output:
+  pdf_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: yes
+    fig_width: 3
+    fig_height: 3
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
+  html_document: 
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+    fig_width: 4
+    fig_caption: yes
+    number_sections: yes
+    theme: readable
+    fig_height: 4
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{=html}
+
+<style type="text/css">
+
+/* Cascading Style Sheets (CSS) is a stylesheet language used to describe the presentation of a document written in HTML or XML. it is a simple mechanism for adding style (e.g., fonts, colors, spacing) to Web documents. */
+
+h1.title {  /* Title - font specifications of the report title */
+  font-size: 24px;
+  color: DarkRed;
+  text-align: center;
+  font-family: "Gill Sans", sans-serif;
+}
+h4.author { /* Header 4 - font specifications for authors  */
+  font-size: 20px;
+  font-family: system-ui;
+  color: DarkRed;
+  text-align: center;
+}
+h4.date { /* Header 4 - font specifications for the date  */
+  font-size: 18px;
+  font-family: system-ui;
+  color: DarkBlue;
+  text-align: center;
+}
+h1 { /* Header 1 - font specifications for level 1 section title  */
+    font-size: 22px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: center;
+}
+h2 { /* Header 2 - font specifications for level 2 section title */
+    font-size: 20px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h3 { /* Header 3 - font specifications of level 3 section title  */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h4 { /* Header 4 - font specifications of level 4 section title  */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    text-align: left;
+}
+
+body { background-color:white; }
+
+.highlightme { background-color:yellow; }
+
+p { background-color:white; }
+
+</style>
+```
+
+```{r setup, include=FALSE}
+# code chunk specifies whether the R code, warnings, and output 
+# will be included in the output files.
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("MASS")) {
+   install.packages("MASS")
+   library(MASS)
+}
+if (!require("leaflet")) {
+   install.packages("leaflet")
+   library(leaflet)
+}
+if (!require("factoextra")) {
+   install.packages("factoextra")
+   library(factoextra)
+}
+if (!require("TSstudio")) {
+   install.packages("TSstudio")
+   library(TSstudio)
+}
+if (!require("plotrix")) {
+   install.packages("plotrix")
+library(plotrix)
+}
+if (!require("ggridges")) {
+   install.packages("ggridges")
+library(ggridges)
+}
+if (!require("tidyverse")) {
+   install.packages("tidyverse")
+library(tidyverse)
+}
+if (!require("GGally")) {
+   install.packages("GGally")
+library(GGally)
+}
+knitr::opts_chunk$set(echo = TRUE,   
+                      warning = FALSE,  
+                      result = TRUE,    
+                      message = FALSE,
+                      comment = NA
+                      )  
+```
+
+\
+
+# Introduction
+
+Regardless of the research design, statistics are a crucial component of research since it allows the researchers to summarize the collected data and give it to others for interpretation. 
+
+We need a defined analytic plan before we start collecting data. The SAP (statistical analysis plan) will direct us from the beginning to the conclusion, help us summarize and describe the data, and test our hypotheses.
+The statistical analysis plan (SAP) describes the intended clinical trial analysis. The SAP is a technical document that describes the statistical methods of research analysis, as opposed to the protocol, which represents the analysis.
+
+# What is a statistical analysis plan?
+
+A statistical analysis plan, or SAP, outlines the analytical approach of the quantitative or qualitative data that analyst will gather. 
+
+An SAP contains comprehensive instructions for carrying out statistical analyses and is a more technical document than the study protocol. Although an SAP was initially designed for clinical trials, it can also be helpful in other sorts of research designs.
+
+In SAP, the proposed statistical analysis must be specified in advance. This should contain the following:
+
+*	Endpoints, both primary and secondary.
+*	Methods of analysis
+*	Set of primary analysis
+*	Comparisons and significance levels are predefined.
+*	Exploratory data analyses (EDA).
+*	Test your maturity.
+
+# How to develop a statistical analysis plan (SAP)?
+
+In clinical studies, an SAP is more challenging to prepare than a clinical trial protocol, requiring a solid grasp of statistical methods, medical language, and visualization power. It gives comprehensive instructions on statistical programming and reporting of clinical trial outcomes. 
+
+The four forms of SAP listed below are used in a clinical experiment:
+
+*	Data monitoring
+*	interim statistical analysis
+*	Integrated statistical analysis strategy
+*	Plan for statistical analysis of a clinical research
+
+# Identifying the need for an SAP
+
+A qualified statistician who has never worked on research should be able to undertake the related analysis if the statistical approach is described in sufficient detail in the study protocol. 
+
+However, an SAP would be necessary for high-risk studies that use complex statistical methods, as it would include more technical and in-depth explanations of the methods described in the protocol as well as specific instructions for carrying out the statistical analysis of the primary and secondary variables and other subsequent data.
+
+
+# Information in the SAP
+
+The SAP should contain various sample size calculations for different statistical procedures to achieve certain statistical power and a thorough explanation of the main and any interim analyses used in the data analysis technique. 
+
+The SAP should also thoroughly explain the procedures used to analyze and display the study results.
+
+* 	The level of statistical significance to be employed, as well as whether one-tailed or two-tailed tests will be used.
+*	Methods for dealing with missing data.
+*	Methods for dealing with outliers.
+*	Methods for estimating points and intervals.
+*	Rules for calculating composite or derived variables, including data-driven definitions and any additional details required to minimize ambiguity.
+*	Baseline and covariate data are used.
+*	Inclusion of randomization factors (if applicable).
+*	Methods for dealing with data from several locations.
+*	Methods for dealing with treatment interactions
+*	Methods for multiple comparisons and subgroup analysis
+*	Interim or sequential analyses are planned.
+*	Computer systems and statistical software packages used to analyze data are specified.
+*	Critical analysis assumptions and sensitivity analyses are checked using these methods.
+*	Tables and figures for presenting study data
+*	The safe population is defined.
+
+
+<font color = "red">*\color{red}The SAP must include provisions for testing the statistical model and information on alternative methods if the test assumptions are not satisfied.*</font>
+
