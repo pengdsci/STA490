@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang = "en">                                    <!-- open html tag: required  -->
+  <head>                                  <!-- open page header: required -->
+    <title>My First Web Page</title>       <!-- page title appears on the tab -->
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            background-image: url('bgIMG.jpg');
+        }
+      </style>
+  </head>                                 <!-- close page header: required -->
+    
+  <body>                                  <!-- open html body: required -->
+    <!-- All contents of the web page MUST be placed between <body> </body> -->
+  <br><br>
+ <table border = 2 bordercolor="gray" bgcolor='#f6f6f6'  width=70%  align = center> 
+    <tr>
+      <TD>     
+        <br>      
+    <center><img src="w02-wculogo.jpg" alt="w02-wcu-logo" width = "300" height = "90"></center> 
+    <center><h2><font color="darkblue"> Your Name</font></h2> 
+      <!-- contact information  -->
+      <font color = "navy"  size=" 3">
+      Address: xxxxxxxxxxx <br>
+      Phone:  xxx-xxx-xxxx <br>
+      Email:  xxx@gmail.com
+      </font></center>
+    <br>
+    <br>
+    <table border = 0 bordercolor="darkgreen" bgcolor='#f6f6f6'  width=95%  align = center> 
+        <tr>
+            <TD>
+                 <h3><font color = "navy">Short Bio</font></h3>
+            </TD>
+            <TD>
+               <font  size=" 4">
+                  <p> write your short bio here.....</p>
+                </font>
+            </TD>
+        </tr>
+
+         <tr>
+            <TD>
+                <h3><font color = "navy">Education</font></h3>
+            </TD>
+            <TD>
+               <font size="4">
+                  <p> write your professional experience here.....</p>
+               </font>
+            </TD>
+        </tr>        
+        
+         <tr>
+            <TD>
+                <h3><font color = "navy">Experience</font></h3>
+            </TD>
+            <TD>
+               <font size="4">
+                  <p> write your professional experience here.....</p>
+               </font>
+            </TD>
+        </tr>
+        
+         <tr>
+            <TD>   
+              <h3><font color = "navy">Projects</font></h3>
+            </TD>
+            <TD>
+               <p> list your project here.....</p>
+                <li>Project #1: <a href="projects/VizFoundation.pdf"> Principles of Visualization</a></li>
+            </TD>
+        </tr>
+        
+        <tr>
+          <TD>
+            <h3><font color = "navy">Skills</font></h3>
+          </TD>
+          <TD>
+             <p> list your skills here.....</p>
+          </TD>
+        </tr>        
+       </table>   
+      </TD>
+    </tr>        
+   </table> 
+  <br><br><br><br>              
+ </body>                                 <!-- close html body: required -->
+</html> 
