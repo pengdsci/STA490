@@ -1,0 +1,165 @@
+---
+title: "An RMarkdown Template for Statistical Reports"
+author: "Your Name "
+date: "Date"
+output:
+  pdf_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: yes
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
+  html_document: 
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+    fig_width: 6
+    fig_caption: yes
+    number_sections: yes
+    theme: readable
+editor_options: 
+  chunk_output_type: console
+---
+
+```{=html}
+
+<style type="text/css">
+
+/* Cascading Style Sheets (CSS) is a stylesheet language used to describe the presentation of a document written in HTML or XML. it is a simple mechanism for adding style (e.g., fonts, colors, spacing) to Web documents. */
+
+h1.title {  /* Title - font specifications of the report title */
+  font-size: 24px;
+  color: DarkRed;
+  text-align: center;
+  font-family: "Gill Sans", sans-serif;
+}
+h4.author { /* Header 4 - font specifications for authors  */
+  font-size: 20px;
+  font-family: system-ui;
+  color: DarkRed;
+  text-align: center;
+}
+h4.date { /* Header 4 - font specifications for the date  */
+  font-size: 18px;
+  font-family: system-ui;
+  color: DarkBlue;
+  text-align: center;
+}
+h1 { /* Header 1 - font specifications for level 1 section title  */
+    font-size: 22px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: center;
+}
+h2 { /* Header 2 - font specifications for level 2 section title */
+    font-size: 20px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h3 { /* Header 3 - font specifications of level 3 section title  */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h4 { /* Header 4 - font specifications of level 4 section title  */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    text-align: left;
+}
+
+body { background-color:white; }
+
+.highlightme { background-color:yellow; }
+
+p { background-color:white; }
+
+</style>
+```
+```{r setup, include=FALSE}
+# Detect, install, and load packages if needed.
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("leaflet")) {
+   install.packages("leaflet")
+   library(leaflet)
+}
+if (!require("EnvStats")) {
+   install.packages("EnvStats")
+   library(EnvStats)
+}
+if (!require("MASS")) {
+   install.packages("MASS")
+   library(MASS)
+}
+if (!require("phytools")) {
+   install.packages("phytools")
+   library(phytools)
+}
+#
+# Specifications of outputs of code in code chunks
+knitr::opts_chunk$set(echo = FALSE,  # include code chunk in the output file
+                   warning = FALSE,  # Sometimes, your code may produce a warning
+                                     # messages, you can choose to include the
+                                     # warning messages in the output file. 
+                   message = FALSE,  
+                   results = TRUE,   # you can also decide whether to include 
+                                     # the output in the output file.
+                   comment = FALSE   # Suppress hash-tags in the output results.
+                      )   
+```
+
+# Introduction
+
+Provide some background on the problem. This includes the motivations and objectives of the analysis. The practical questions you want to address in the project.
+
+# Materials
+
+Some information about the data should be described here. For example, methods of data collection, variable names, and definitions, potential data challenges, etc. You could use subsections to organize your work.
+
+
+# Methodology and Analysis
+
+Describe all the methods (including justifications for using the methods) you used to gather and analyze the data here. You need to provide extensive details so that anyone can reproduce your results based on the details you provided in this section.
+
+In general, you are expected to have several subsections to organize your work.
+
+
+# Results and Conclusions
+
+Show your audience all your results and conclusions with justifications. Write this section in a way that enables a non-statistician to understand the content. Be very specific.
+
+
+# General Discussion
+
+Talk about results (with justifications) and link them to real-world implications. Pay attention to whether the research questions were well addressed. You should also address limitations and potential improvements.
+
+
+# References
+
+All published resources including notes and blogs from the internet, books (including textbooks), journal articles, etc., should be listed in this section. There are several different citation styles. You can use either AMA (American Medical Association) or APA (American Psychological Association) Citation.  
+
+**APA Style Examples**
+
+Grady, J. S., Her, M., Moreno, G., Perez, C., & Yelinek, J. (2019). Emotions in storybooks: A comparison of storybooks that represent ethnic and racial groups in the United States. *Psychology of Popular Media Culture*, 8(3), 207–217. https://doi.org/10.1037/ppm0000185
+
+Jerrentrup, A., Mueller, T., Glowalla, U., Herder, M., Henrichs, N., Neubauer, A., & Schaefer, J. R. (2018). Teaching medicine with the help of “Dr. House”. PLoS ONE, 13(3), Article e0193972. https://doi.org/10.1371/journal.pone.019397
+
+
+**AMA Style Examples**
+
+Conrad P, Gallagher EB. *Health and Health Care in Developing Countries: Sociological Perspectives*. Temple University Press; 1993.
+
+Shim P, Choi D, Park Y. Association of blood fatty acid composition and dietary pattern with the risk of non-alcoholic fatty liver disease in patients who underwent cholecystectomy. *Ann Nutr Metab.* 2017;70(4):303–311. doi:10.1159/000475605.
+
+Murphy B. 5 tips to survive first-year anatomy lessons in medical school. American Medical Association. Published August 24, 2022. Accessed September 2, 2022. https://www.ama-assn.org/medical-students/medical-school-life/5-tips-survive-first-year-anatomy-lessons-medical-school.
