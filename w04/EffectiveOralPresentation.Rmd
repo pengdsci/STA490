@@ -1,0 +1,324 @@
+---
+title: '<font size = 7 color = "white">Effective Delivery of Presentation</font>'
+subtitle: '<img src="presentation.png" width=140 height=90>'
+author: '<font size = 5 color = "white"> Cheng Peng </font>'
+institute: '<font size = 6 color = "white">West Chester University of Pennsylvania</font><br> '
+date: ' <font color = "white" size =4> Prepared for<br> </font> <br> <font color = "chocolate" size = 6> STA490: Statistics Capstone </font> <br> <br> <!--font color = "white" size = 3> Slides available at: https://your-RPubs-url AND https://your-GitHub-url</font-->'
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer01.css
+    nature:
+      slideNumberFormat: "%current%"
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+      countIncrementalSlides: true
+---
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("pander")) {
+   install.packages("pander")
+   library(pander)
+}
+if (!require("plotly")) {
+   install.packages("plotly")
+   library(plotly)
+}
+if (!require("ggplot2")) {
+   install.packages("ggplot2")
+   library(ggplot2)
+}
+# install.packages("devtools")
+# devtools::install_github('emitanaka/anicon')
+#
+knitr::opts_chunk$set(
+                  fig.width=3, 
+                  fig.height=3, 
+                  fig.retina=12,
+                  out.width = "100%",
+                  cache = FALSE,
+                  echo = TRUE,
+                  message = FALSE, 
+                  warning = FALSE,
+                  hiline = TRUE
+                  )
+```
+
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+  style_duo_accent(primary_color = "#1F4257",
+          secondary_color = "#380F2A",
+          # fonts
+          header_font_google = google_font("Martel"),
+          text_font_google = google_font("Lato"),
+          code_font_google = google_font("Fira Mono"))
+```
+
+name:toc
+class:inverse, top
+
+# Table of Contents
+<!--h1 align="center"> Table of Contents</h1-->
+<BR>
+
+<!--[<img src="linksymbol.png" width=50 height=50>](#Presentclear) -->
+<table align="center", width = "40%">
+<tr>
+<td style="text-size:50px; line-height: 1.5; font-variant:small-caps">
+
+ <font size = 6><img src="ram1.png" width=30, height=25> <b> Know your audience. </b></font>
+ <br>
+ 
+ <font size = 6><img src="ram1.png" width=30, height=25> <b> Start strong. </b></font> 
+ <br>
+ 
+ <font size = 6><img src="ram1.png" width=30, height=25> <b> Show your passion. </b></font> <br>
+ <font size = 6><img src="ram1.png" width=30, height=25> <b> Keep it short. </b></font><br>
+ 
+ <font size = 6><img src="ram1.png" width=30, height=25> <b> Maintain eye-contact. </b></font><br>
+ 
+ <font size = 6><img src="ram1.png" width=30, height=25> <b> Make adequate use of voice. </b></font><br>
+ 
+ <font size = 6><img src="ram1.png" width=30, height=25> <b> Use body language. </b></font><br>
+ 
+ <font size = 6><img src="ram1.png" width=30, height=25> <b> Deal with nervousness. </b></font>
+</td>
+</tr>
+</table>
+
+[<img src="previous.png" width=60, height=18, align="left">](#toc0) 
+[<img src="next.png" width=60, height=18, align="right">](#storytelling)
+
+---
+class:inverse1 middle center
+name:storytelling
+
+
+#  
+
+<center>
+<font color= "gold" size = 8> <b>
+
+```{r echo=FALSE}
+anicon::nia("Tell", animate = "pulse")
+```
+<br> An Engaging Story! </b></font></center>
+
+[<img src="previous.png" width=60, height=18, align="left">](#toc) 
+[<img src="next.png" width=60, height=18, align="right">](#Presentclear)
+
+
+---
+name:know-audience
+
+# <font color="#70384A"> Know Your Audience </font>
+<br>
+
+<table align="center", width = "60%">
+<tr>
+<td style="line-height: 1.5; font-variant:small-caps; text-color:#70384A;">
+<font size = 6 color = "#70384A"><img src="ram0.png"  width=40, height=33> Who is your audience?</font><br>
+ 
+<font size = 6 color = "#70384A"><img src="ram0.png"  width=40, height=33> Technical backgrounds of audience.</font><br>
+ 
+ <font size = 6 color = "#70384A"><img src="ram0.png"  width=40, height=33> Composition of audience </font><br> 
+ 
+ <font size = 6 color = "#70384A"><img src="ram0.png"  width=40, height=33> Audience familiarity of the presenting topic.</font><br>
+ 
+</td>
+</tr>
+</table>
+
+[<img src="previous.png" width=60, height=18, align="left">](#story-telling) 
+[<img src="next.png" width=60, height=18, align="right">](#readable) 
+
+
+---
+name:readable
+
+<h1 align="center"><font color="#70384A"> Start Strong </font></h1>
+<br>
+
+<table align="center", width = "60%">
+<tr>
+<td style="text-size:50px; line-height: 1.5; text-color:#70384A; font-face: 'Trebuchet MS', sans-serif;">
+ <font size = 6 color = "#70384A"><img src="ram0.png"  width=40, height=33> Start with a relevant story.</font><br>
+ 
+ <font size = 6 color = "#70384A"><img src="ram0.png"  width=40, height=33> Share a surprising statistics  </font><br>
+ 
+ <font size = 6 color = "#70384A"><img src="ram0.png"  width=40, height=33> Use consistent font face.</font><br> 
+ 
+ <font size = 6 color = "#70384A"><img src="ram0.png"  width=40, height=33> Avoid blocks of text.</font><br>
+ 
+ <font size = 6 color = "#70384A"><img src="ram0.png"  width=40, height=33> Avoid capitalized text.</font><br> 
+ 
+ <font size = 6 color = "#70384A"><img src="ram0.png"  width=40, height=33> Highlight aesthetics of visuals.</font><br> 
+ 
+ <font size = 6 color = "#70384A"><img src="ram0.png"  width=40, height=33> Use LaTex equations if necessary. </font><br>
+
+</td>
+</tr>
+</table>
+
+[<img src="previous.png" width=60, height=18, align="left">](#Presentclear) 
+[<img src="next.png" width=60, height=18, align="right">](#overdesign)  
+ 
+
+---
+name:overdesign
+
+<h1 align="center"><font color="#70384A"> Avoiding Over-design </font></h1>
+<br>
+
+<table align="center", width = "60%">
+<tr>
+<td style="line-height: 1.5;  font-face: 'Trebuchet MS', sans-serif;">
+
+<font size = 6 color = "#70384A"><img src="ram0.png"  width=40, height=33> Avoiding cluttering information.</font><br>
+
+ <font size = 6 color = "#70384A"><img src="ram0.png"  width=40, height=33> Avoiding unnecessary information.</font><br> 
+ 
+ <font size = 6 color = "#70384A"><img src="ram0.png"  width=40, height=33> Avoid crowding slides by splitting.</font><br>
+ 
+ <font size = 6 color = "#70384A"><img src="ram0.png"  width=40, height=33> Avoid distracting background.</font><br> 
+ 
+ <font size = 6 color = "#70384A"><img src="ram0.png"  width=40, height=33> Avoid over decoration.</font><br> 
+ 
+ <font size = 6 color = "#70384A"><img src="ram0.png"  width=40, height=33> Avoid too many animations.</font><br> 
+ 
+  <font size = 6 color = "#70384A"><img src="ram0.png"  width=40, height=33> Avoid text-heavy slides.</font><br>
+  
+</td>
+</tr>
+</table>
+
+[<img src="previous.png" width=60, height=18, align="left">](#readable) 
+[<img src="next.png" width=60, height=18, align="right">](#overusetech)
+
+
+---
+name:overusetech
+
+<h1 align="center"><font color="#70384A"> Overusing Technology</font></h1>
+<br>
+
+<table align="center", width = "70%">
+<tbody >
+<tr style= "line-height: 1.5; font-face: 'Trebuchet MS', sans-serif;">
+<td>
+
+<img src="ram0.png" width=40, height=33><font size = 6 color = "#70384A"> Aim to communicate not tech showcase.<br>
+
+<img src="ram0.png"  width=40, height=33> Use animations sparingly.<br> 
+ 
+<img src="ram0.png"  width=40, height=33> Use sound and video only if needed.<br>
+ 
+<img src="ram0.png"  width=40, height=33> Avoid using sound if possible.<br>
+ 
+<img src="ram0.png"  width=40, height=33> Use video only if needed.<br>
+ 
+<img src="ram0.png"  width=40, height=33>Avoid using sound and video the same time.<br> 
+ 
+<img src="ram0.png"  width=40, height=33>Avoid switching to different tech platform<br> 
+ </font>
+</td>
+</tr>
+</tbody>
+</table>
+
+[<img src="previous.png" width=60, height=18, align="left">](#overusetech) 
+[<img src="next.png" width=60, height=18, align="right">](#consistency)
+
+
+
+---
+name:consistency
+
+# <font color="#70384A"> Consistent Design Presentation Slides </font> 
+<br>
+
+<table align="center", width = "70%">
+<tbody >
+<tr style= "line-height: 1.5; font-face: 'Trebuchet MS', sans-serif;">
+<td>
+
+<img src="ram0.png" width=40, height=33><font size = 6 color = "#70384A"> Choose a theme and stick to it.<br>
+
+<img src="ram0.png"  width=40, height=33> Maintain the key design elements.<br> 
+ 
+<img src="ram0.png"  width=40, height=33> Use of dominant and secondary colors. <br>
+ 
+<img src="ram0.png"  width=40, height=33> Font and background consistency. <br>
+ 
+<img src="ram0.png"  width=40, height=33> Consistency of bullets point and alternatives.<br>
+
+</font>
+</td>
+</tr>
+</tbody>
+</table>
+
+[<img src="previous.png" width=60, height=18, align="left">](#overusetech) 
+[<img src="next.png" width=60, height=18, align="right">](#overusetech)
+
+
+
+---
+name:visuals
+
+# <font color="#70384A"> Use and Create Visual Contents </font> 
+<br>
+
+<table align="center", width = "70%">
+<tbody >
+<tr style= "line-height: 1.5; font-face: 'Trebuchet MS', sans-serif;">
+<td>
+
+<img src="ram0.png" width=40, height=33><font size = 6 color = "#70384A">Visual contents: tables and graphs<br>
+
+<img src="ram0.png"  width=40, height=33> Visuals for communication not decoration.<br>
+
+<img src="ram0.png"  width=40, height=33> Use of complementary and analogous colors. <br>
+ 
+<img src="ram0.png"  width=40, height=33> Controlling size of tables and graphs<br>
+ 
+<img src="ram0.png"  width=40, height=33> Visuals must be readable.<br>
+
+<img src="ram0.png"  width=40, height=33> No more than two visuals per slide.<br>
+
+<img src="ram0.png"  width=40, height=33> Right visual for right information.<br>
+
+
+</font>
+</td>
+</tr>
+</tbody>
+</table>
+
+[<img src="previous.png" width=60, height=18, align="left">](#consistency) 
+[<img src="next.png" width=60, height=18, align="right">](#)
+
+
+
+
+
+---
+class: inverse1 center, middle
+
+# Thanks!
+
+Slides created using R packages:
+
+[**xaringan**](https://github.com/yihui/xaringan)<br>
+[**gadenbuie/xaringanthemer**](https://github.com/gadenbuie/xaringanthemer)<br>
+[**knitr**](http://yihui.name/knitr)<br>
+[**R Markdown**](https://rmarkdown.rstudio.com)<br>
+via <br>
+[**RStudio Desktop**](https://posit.co/download/rstudio-desktop/)
