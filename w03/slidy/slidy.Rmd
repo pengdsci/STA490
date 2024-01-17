@@ -1,0 +1,223 @@
+---
+title: '<center>Slidy Presentation</center>'
+author: "Cheng Peng"
+date: '<img src="logo.png" width=100 length=100><br><br> West Chester University'
+output: 
+  slidy_presentation:
+       font_adjustment: +1
+       footer: 'Slidy presentation created using RMarkdown (modified from the default template for STA490 Capstone Statistics)'
+       widescreen: yes
+       self_contained: true
+---
+
+<link href="CustomSlidy.css" rel="stylesheet">
+
+```{r setup, include=FALSE}
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("pander")) {
+   install.packages("pander")
+   library(pander)
+}
+if (!require("tidyverse")) {
+   install.packages("tidyverse")
+   library(tidyverse)
+}
+if (!require("ggplot2")) {
+   install.packages("ggplot2")
+   library(ggplot2)
+}
+if (!require("plotly")) {
+   install.packages("plotly")
+   library(plotly)
+}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+
+# Getting Started with Slidy Presentation
+
+<div align="center">
+<table border = 0 width="80%">
+<tr>
+<td> 
+- Default template: simple and flexible.
+- Suggested modified template: YAML header
+<div style="font-size:3">
+```
+---
+title: '<center>Slidy Presentation</center>'
+author: "Cheng Peng"
+date: '<img src="logo.png" width=100 length=100><br><br> West Chester University'
+output: 
+  slidy_presentation:
+       font_adjustment: +1
+       footer: 'Slidy presentation created using RMarkdown (modified from the default template for STA490 Capstone Statistics)'
+       widescreen: yes
+       self_contained: true
+---
+```
+</div>
+
+- CSS file (feel free to modify)
+
+- `(level 1 Header: #)` starts title slides with no accompanying text underneath.
+
+- `(level 2 Header: ##)` starts new slides with additional content underneath.
+
+- `Markdown tag ---`: an alternative to `##`. 
+
+</td>
+</tr>
+</table>
+</div>
+
+
+# Bullet Points
+
+<div align="center">
+<table border = 0 width="60%">
+<tr>
+<td> 
+- level 1 bullet
+  - level 2 bullet
+  - level 2 bullet
+- level 1 bullet
+- level 1 bullet
+  - level 2 bullet
+    - level 3 bullet
+</td>
+</tr>
+</table>
+</div>
+
+
+
+# Two-column slide 
+
+## HTML Table
+<table border = 1 class="rmdtable">
+<tr>
+<th>Left-column</th><th> Right-column</th>
+</tr>
+<tr>
+<td> left cell contents</td>
+<td>right cell contents </td>
+</tr>
+</table>
+
+
+## Markdown Table
+<div align="center">
+|    Left-column     |      Right-column    |
+|:------------------:|:--------------------:|
+|   left cell contents| $x^2+y^2 = r^2$      |
+</div>
+
+
+
+# Slide with R Kable Output
+
+<div align="center">
+```{r}
+knitr::kable(summary(cars))
+```
+</div>
+
+
+
+# Default Output Table
+
+<div align="center">
+```{r comment = NA}
+summary(cars)
+```
+</div>
+
+
+# Slide with Plot
+
+```{r pressure, fig.align='center', fig.width=4, fig.height=4}
+par(bg="#8fb0c4")
+plot(pressure)
+```
+
+
+# Include External Images
+
+<div align="center">
+<table border = 0 width="80%">
+<tr>
+<td>
+- using software remove background first (e.g., <https://www.remove.bg/>)
+- embedding transparent image to the slide to match the background color.
+- see the example below
+</td>
+</tr>
+<tr>
+<td>
+   <table border = 0 width="80%">
+     <tr>
+       <td align = "left"> 
+         <img src="RMDlogo.png" width = 100 height = 100>
+      </td>
+      <td  align = "left"> 
+         <img src="RMDlogo-removebg.png" width = 100 height = 100>
+      </td>
+     </tr>
+   </table>
+ </td>
+</tr>
+</table>
+</div>
+
+
+
+# Embedding Opened PDF Documents
+
+<center><div class='wrap'>
+<object data="https://pengdsci.github.io/sta553/w03-Ethics.pdf" type="application/pdf" width="80%" height="430px">
+      <p>Unable to display PDF file. <a href="https://pengdsci.github.io/sta553/w03-Ethics.pdf">Download</a> instead.</p>
+    </object>
+</div></center>
+
+
+# Overlay Density Curves
+
+```{r echo=FALSE}
+# define three densities
+sepal.len.setosa <- iris[which(iris$Species == "setosa"),]
+setosa <- density(sepal.len.setosa$Sepal.Length)
+sepal.len.versicolor <- iris[which(iris$Species == "versicolor"),]
+versicolor <- density(sepal.len.versicolor$Sepal.Length)
+sepal.len.virginica <- iris[which(iris$Species == "virginica"),]
+virginica <- density(sepal.len.virginica$Sepal.Length)
+# plot density curves
+fig <- plot_ly(x = ~virginica$x, y = ~virginica$y, 
+               type = 'scatter', mode = 'lines', 
+               name = 'virginica', 
+               fill = 'tozeroy')  %>% 
+           # adding more density curves
+       add_trace(x = ~versicolor$x, y = ~versicolor$y, 
+                 name = 'versicolor', fill = 'tozeroy')  %>% 
+       add_trace(x = ~setosa$x, y = ~setosa$y, 
+                 name = 'setosa', fill = 'tozeroy')  %>%   
+       layout(xaxis = list(title = 'Sepal Length'),
+              yaxis = list(title = 'Density'))
+fig
+```
+
+
+# Searchable Data Table
+
+
+```{r eval=requireNamespace("DT", quietly=TRUE)}
+DT::datatable(head(mtcars), fillContainer = FALSE, options = list(pageLength = 4))
+```
+
+
+
+

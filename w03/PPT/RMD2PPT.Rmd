@@ -1,0 +1,91 @@
+---
+title: "RMD to PPT"
+author: "Cheng Peng"
+date: "`r Sys.Date()`"
+output: powerpoint_presentation
+reference_doc: "Galaxy.pptx"
+---
+
+```{r setup, include=FALSE}
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("pander")) {
+   install.packages("pander")
+   library(pander)
+}
+if (!require("plotly")) {
+   install.packages("plotly")
+   library(plotly)
+}
+if (!require("ggplot2")) {
+   install.packages("ggplot2")
+   library(ggplot2)
+}
+if (!require("patchwork")) {
+   install.packages("patchwork")
+   library(patchwork)
+}
+if (!require("tidyverse")) {
+   install.packages("tidyverse")
+   library(tidyverse)
+}
+if (!require("gridtext")) {
+   install.packages("gridtext")
+   library(gridtext)
+}
+
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Auto Industry Indicators
+
+```{r}
+# prep frequency table
+freqtable <- table(mpg$manufacturer)
+df <- as.data.frame.table(freqtable)
+theme_set(theme_classic())
+# Plot
+g <- ggplot(df, aes(Var1, Freq))
+g <- g + geom_bar(stat="identity", width = 0.5, fill="tomato2") + 
+  theme(axis.text.x = element_text(angle=65, vjust=0.6)) +
+  theme(axis.title.x = element_blank())
+
+t <- richtext_grob("• Hello <br> <br> • Goodbye", halign = 0, valign = -10)
+(g+g) / (g+t)
+```
+
+
+## R Markdown
+
+This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+
+## Slide with Bullets
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+
+## Slide with R Output
+
+```{r cars, echo = TRUE, comment = NA}
+summary(cars)
+```
+
+## Slide with Plot
+
+```{r pressure}
+plot(pressure)
+```
+
+## Interactive Contents not Allowed
+
+Any R code that generates web-based interactive outcomes will lead to errors! 
+
+
+
