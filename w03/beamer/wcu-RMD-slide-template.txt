@@ -1,0 +1,67 @@
+\usepackage{graphicx}
+\usepackage{rotating}
+%\setbeamertemplate{caption}[numbered]
+
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage[normalem]{ulem}
+%\mode<presentation>
+
+\usepackage{wasysym}
+\usepackage{amsmath}
+
+\setbeamertemplate{navigation symbols}{}
+\institute{Department of Mathematics}
+\titlegraphic{\includegraphics[width=0.3\paperwidth]{\string mainlogo1.png}}
+\setbeamertemplate{title page}[empty]
+
+\setbeamerfont{subtitle}{size=\small}
+
+\setbeamercovered{transparent}
+
+\definecolor{wcupurple}{HTML}{4A148C}
+\definecolor{wcuorange}{HTML}{FFCC33}
+
+\setbeamercolor{frametitle}{fg=wcuorange,bg=wcupurple}
+\setbeamercolor{title}{fg=wcupurple,bg=white}
+\setbeamercolor{local structure}{fg=wcupurple}
+\setbeamercolor{section in toc}{fg=wcupurple,bg=white}
+% \setbeamercolor{subsection in toc}{fg=wcuorange,bg=white}
+
+\setbeamercolor{item projected}{fg=wcupurple,bg=white}
+\setbeamertemplate{itemize item}{\color{wcupurple}$\bullet$}
+\setbeamertemplate{itemize subitem}{\color{wcupurple}\scriptsize{$\bullet$}}
+\let\Tiny=\tiny
+
+\setbeamercolor{footline}{fg=wcupurple!50, bg=white}
+\setbeamercolor{block title}{fg=wcuorange,bg=white}
+\let\Tiny=\tiny
+
+\AtBeginPart{}
+\AtBeginSection{}
+\AtBeginSubsection{}
+\AtBeginSubsubsection{}
+\setlength{\emergencystretch}{0em}
+\setlength{\parskip}{0pt}
+
+% Edit the colors as you see fit.
+%--------------------------------------------------
+\defbeamertemplate*{footline}{my footline}{%
+    \ifnum\insertpagenumber=1
+    \hbox{%
+        \begin{beamercolorbox}[wd=\paperwidth,ht=1.8ex,dp=1ex,center]{}%
+      % empty environment to raise height
+        \end{beamercolorbox}%
+    }%
+    \vskip0pt%
+    \else%
+        \Tiny{%
+            \hfill%
+		\vspace*{1pt}%
+            \insertframenumber/\inserttotalframenumber \hspace*{1.1cm}%
+            \newline%
+            \color{wcupurple}{\rule{\paperwidth}{0.4mm}}\newline%
+            \color{wcuorange}{\rule{\paperwidth}{0.4mm}}%
+        }%
+    \fi%
+}
