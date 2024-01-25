@@ -1,0 +1,223 @@
+---
+title: '<font color = "purple"><B>Some R Markdown Tips</b></font>'
+author: "Cheng Peng"
+date: "West Chester University"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    toc_collapsed: yes
+    toc_depth: 4
+    css: css/cpRMDstyle.css
+    number_sections: yes
+    code_folding: hide
+    code_download: yes
+    theme: lumen
+  pdf_document:
+    toc: yes
+    toc_depth: '4'
+---
+
+<style type="text/css">
+
+/* Tab features */
+.nav>li>a {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    color: purple;
+}
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
+    color: darkred
+    background-color: purple;
+}
+
+/*
+nav-pills>li:nth-child(2) {
+    background: darkred;
+ }
+ */
+</style>
+
+
+```{r setup, include=FALSE}
+if (!require("tidyverse")) {
+   install.packages("tidyverse")
+   library(tidyverse)
+}
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("gifski")) {
+   install.packages("gifski")
+   library(gifski)
+}
+if (!require("plotly")) {
+   install.packages("plotly")
+   library(plotly)
+}
+# knitr::opts_knit$set(root.dir = "C:\\STA490\\w05")
+knitr::opts_chunk$set(echo = TRUE,       
+                      warning = FALSE,   
+                      result = TRUE,   
+                      message = FALSE,
+                      comment = NA)
+```
+
+\
+
+
+# More Controls with YAML
+
+One can add some additional controls of the knitted document to the YAML header.
+
+* `code_folding: "hide"` to hide the code chunk to make the knitted document cleaner.
+* `code_download: true` to allow downloading RMD source from the HTML page.
+
+
+# HTML Tags for YAML
+
+In general, the YAML header lays out the title of the knitted document. It can be decorated using CSS. The content in YAML that passes to the knitted document is enclosed in double quotes. One could also use HTML tags directly to add new features to the title. When doing this, you need to change the default double quotes to single quotes.
+For example, `'<font color = "purple">Some R Markdown Tips</font>'` changes the color from `navy` to `purple`.
+
+
+
+# Commonly Used HTML Tags
+
+Most frequently used HTML tags
+
+* `<font> </font>` - <font color= "red" size =4 align="center" ><b> font decoration </b></font>
+* `<a href=""> </a>` -<a href="https://pengdsci.github.io/STA490/"> hyperlink</a>
+* `<img src="">` - <img src = "https://pkgs.rstudio.com/rmarkdown/reference/figures/logo.png" width=50 height=50> including an image 
+* `<center> </center>` - <center><font color = "skyblue"><b>alignment</b></font></center>
+* `<br>` - line break
+* `hr` - horizontal line
+* `<div>... </div>` - divide 
+* `<p> </p>` - paragraph 
+* `<ul> </ul>` - unordered list
+* `<ol> </ol>` - ordered list
+* `<li> </li>` - list (`<li>`) is used with either `<ol>` or `<ul>`. The default is `<ul>`.
+* `<table><tr><td> ... </td></tr></table>` - defining HTML table 
+* `<tr>` - defining table row
+* `<td>` - defining table column
+
+<table border = "2" bordercolor="green"  bgcolor="gray"  width="90%">
+  <tr bordercolor="red">
+    <th>Company</th>
+    <th>Contact</th>
+    <th>Country</th>
+  </tr>
+  <tr>
+    <td>Alfreds Futterkiste</td>
+    <td>Maria Anders</td>
+    <td>Germany</td>
+  </tr>
+  <tr>
+    <td>Centro comercial Moctezuma</td>
+    <td>Francisco Chang</td>
+    <td>Mexico</td>
+  </tr>
+</table>
+
+
+# Figure in Two Columns
+
+Arguments `out.width` and `out.height` apply to both existing images and R-generated figures. 
+
+Unlike the `fig.width` and `fig.height` arguments which only affect dynamic figures, the `out.width` and `out.height` arguments can be used with any type of graphic and conveniently can accept sizes in pixels or percentages as a string with % or px as a suffix.
+
+Keep in mind that the % refers to the percent of the HTML container. For example, if the block of text that the image is in is 1000px wide then the image will be 200px using 20%.
+
+
+`out.width` can also be used to lay out multi-column figures.
+
+
+```{r out.width=c('50%', '50%'), fig.show='hold'}
+boxplot(1:10)
+plot(rnorm(10))
+plot(density(rnorm(100)))
+```
+
+# Turn Sections to Tabs
+
+Tab format HTML documents are sometimes easy for readers to read the document. R Markdown can convert section-format documents to tab-format documents easily. The following is a simple example based on the popular [R mtcars dataset](https://rstudio-pubs-static.s3.amazonaws.com/61800_faea93548c6b49cc91cd0c5ef5059894.html).
+
+## An Example of Tab Format Document {.tabset .tabset-fade .tabset-pills}
+
+### Scatter Plot
+
+As an example, the following scatter plot shows the relationship between `gross horsepower` and `mile per gallon`.
+
+
+```{r fig.align='center', fig.width=3, fig.height=3}
+mtcars %>% 
+  ggplot(aes(x = hp, y = mpg)) +
+  geom_point()
+```
+
+### Summary Table
+
+The following summarized table gives the distributional information of the data set.
+
+```{r}
+#| collapse = FALSE
+summary(mtcars)
+```
+
+
+# GIF Animation
+
+R has several animation libraries one can use to generate animated graphs to explain some of the complex concepts visually. Sometimes people can generate a series of related images and then use software programs to make a GIF image. This external GIF can also be included in the R Markdown document. 
+
+```{r, animation.hook='gifski'}
+for (i in 1:5) {
+  pie(c(i %% 5, 1, 3), col = c('red', 'yellow', "blue"), labels = paste(i))
+}
+```
+
+# Load An External image
+
+In addition to the R-generated graphics, we can also include external images in different formats in the R Markdown document. `out.width=` and `out.height=` options should be used to control the size of the images. 
+
+```{r, fig.align='center', out.width = "50%"}
+include_graphics("https://editor.analyticsvidhya.com/uploads/75819stats_1050x520.png")
+```
+
+# Inline Chunk Options
+
+If too many chunk options are required to lay out the figure, it is not convenient to put all of them in the code chunk. One way to handle this situation is to use inline chunk options.
+
+
+```{r}
+#| fig.width = 5, fig.height = 4,
+#| fig.align='center', fig.cap = "My caption"
+
+plot_ly(x=mtcars$wt,y=mtcars$mpg,mode = "markers",color = as.factor(mtcars$vs))
+```
+
+# Including CSS
+
+There are three ways of inserting a style sheet in the RMarkdown document: inline CSS, internal CSS, and external CSS. We have used all three different formats of CSS in this RMD to format the text or decorate the layout on different occasions. To summarize,
+
+* **inline CSS**: This is an example showing how to change the <font style = "font-size: 10px; color: darkred; font-weight:bold; font-family:verdana;"> font size, face, color, etc.</font>
+
+* **internal CSS**: The internal CSS was included at YAML and setup code chunk ([Here Is the screenshot](https://pengdsci.github.io/STA490/w01/img/internalCSS.png))
+
+* **External CSS**: The external CSS style file used in this document can be found ([here](https://pengdsci.github.io/STA490/w01/css/cpRMDstyle.css))
+
+
+#  Verbatim Code Chunks
+
+Typically we write code chunks and inline expressions that we want to be parsed and evaluated by `knitr`. However, if we are trying to write a tutorial on using knitr`, we may need to generate a verbatim code chunk or inline expression that is not parsed by knitr, and we want to display the content of the chunk header and all related options.
+
+````{verbatim}
+
+```{r out.width=c('50%', '50%'), fig.show='hold'}
+boxplot(1:10)
+plot(rnorm(10))
+plot(density(rnorm(100)))
+```
+
+````
+
