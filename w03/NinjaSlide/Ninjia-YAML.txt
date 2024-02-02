@@ -1,0 +1,16 @@
+---
+title: '<font size = 7 color = "white">Presentation Ninja Basics</font>'
+subtitle: '<img src="img/logo_1.png" width=100 height=100><img src="img/RMarkdown-logo.png" width=90 height=100> <img src="img/xaringan-logo.png" width=90 height=100>'
+author: '<font size = 5 color = "white"> Cheng Peng </font>'
+institute: '<font size = 6 color = "white">West Chester University of Pennsylvania</font><br> '
+date: ' <font color = "white" size =4> Prepared for<br> </font> <br> <font color = "gold" size = 6> STA490: Statistics Capstone </font> <br> <br> <font color = "white" size = 3> Slides available at: https://your-RPubs-url AND https://your-GitHub-url</font>'
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer01.css
+    nature:
+      slideNumberFormat: "%current%"
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+      countIncrementalSlides: true
+---

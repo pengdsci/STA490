@@ -1,0 +1,17 @@
+---
+title: "Ninja Presentation Title"
+subtitle: "Subtitle of needed"  
+author: 
+  - "First Author"
+  - "Second Author"
+date: "Date"
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer0.css 
+    nature:
+      slideNumberFormat: "%current%"
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+      countIncrementalSlides: true
+---
