@@ -190,7 +190,7 @@ dplyr::starwars %>% dplyr::slice_sample(n = 4)
 
 ---
 
-```{r message=TRUE, eval=requireNamespace("cli", quietly = TRUE)}
+```{r message=TRUE}
 cli::cli_alert_success("It worked!")
 ```
 
@@ -219,9 +219,9 @@ layout: true
 ## Tables
 
 ---
-exclude: `r if (requireNamespace("tibble", quietly=TRUE)) "false" else "true"`
 
-```{r eval=requireNamespace("tibble", quietly=TRUE)}
+
+```{r}
 tibble::as_tibble(mtcars)
 ```
 
@@ -232,9 +232,8 @@ knitr::kable(head(mtcars), format = 'html')
 ```
 
 ---
-exclude: `r if (requireNamespace("DT", quietly=TRUE)) "false" else "true"`
 
-```{r eval=requireNamespace("DT", quietly=TRUE)}
+```{r}
 DT::datatable(head(mtcars), fillContainer = FALSE, options = list(pageLength = 4))
 ```
 
@@ -309,14 +308,14 @@ layout: true
 
 ---
 
-```{r plot-example, eval=requireNamespace("ggplot2", quietly=TRUE)}
+```{r}
 library(ggplot2)
 (g <- ggplot(mpg) + aes(hwy, cty, color = class) + geom_point())
 ```
 
 ---
 
-```{r plot-example-themed, eval=requireNamespace("showtext", quietly=TRUE) && requireNamespace("ggplot2", quietly=TRUE)}
+```{r}
 g + xaringanthemer::theme_xaringan(text_font_size = 16, title_font_size = 18) +
   ggtitle("A Plot About Cars")
 ```

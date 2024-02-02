@@ -436,23 +436,21 @@ An example of inline equation $y=\beta_0+\beta_1x_1+\cdots+\beta_kx_k+\epsilon$,
 
 ---
 class: inverse1 center middle 
-exclude: `r if (requireNamespace("tibble", quietly=TRUE)) "false" else "true"`
 
 # Text Format Data Table
 
-```{r echo=FALSE, eval=requireNamespace("tibble", quietly=TRUE), comment=NA}
+```{r echo=FALSE, comment=NA}
 tibble::as_tibble(mtcars)
 ```
 
 
 ---
 class: inverse3 center middle 
-exclude: `r if (requireNamespace("DT", quietly=TRUE)) "false" else "true"`
 
 # Interactive Data Table
 
-```{r eval=requireNamespace("DT", quietly=TRUE), echo=FALSE}
-DT::datatable(head(mtcars), fillContainer = FALSE, options = list(pageLength = 6))
+```{r  echo=FALSE}
+DT::datatable(head(mtcars), fillContainer = FALSE, options = list(pageLength = 4))
 ```
 
 
@@ -461,7 +459,7 @@ name: rplot
 
 # R Generated Plot
 
-```{r plot-example, fig.align='center', eval=requireNamespace("ggplot2", quietly=TRUE), out.height="40%", out.width="40%"}
+```{r plot-example, fig.align='center', out.height="40%", out.width="40%"}
 library(ggplot2)
 (g <- ggplot(mpg) + aes(hwy, cty, color = class) + geom_point())
 ```
