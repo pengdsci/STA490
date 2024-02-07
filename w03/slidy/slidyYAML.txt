@@ -1,0 +1,11 @@
+---
+title: '<center>Slidy Presentation</center>'
+author: "Cheng Peng"
+date: '<img src="logo.png" width=100 length=100><br><br> West Chester University'
+output: 
+  slidy_presentation:
+       font_adjustment: +1
+       footer: 'Slidy presentation created using RMarkdown (modified from the default template for STA490 Capstone Statistics)'
+       widescreen: yes
+       self_contained: true
+---
