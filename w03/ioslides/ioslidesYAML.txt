@@ -1,0 +1,15 @@
+---
+title: '<img src="img/logo.png" width = 120 height = 120>RMarkdown Presentation Formats'
+subtitle: ""
+author: "Cheng Peng"
+date: "West Chester University"
+institution: ""
+output:
+  ioslides_presentation:
+    highlight: zenburn
+    slide_level: 3
+    smaller: yes
+    css: css/CustomIOslides.css
+    widescreen: no
+    self_contained: true
+---
