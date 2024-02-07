@@ -1,0 +1,17 @@
+---
+title: "RMarkdown Presentation Formats"
+author: "Cheng Peng"
+date: "West Chester University"
+output:
+  beamer_presentation: 
+    slide_level: 3
+    includes:
+      in_header: "wcu-RMD-slide-template.txt"
+    theme: Goettingen
+    fonttheme: professionalfonts
+    colortheme: beaver
+    fig_width: 3
+    fig_height: 3
+    toc: yes
+    incremental: no
+---
