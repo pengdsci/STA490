@@ -1,0 +1,23 @@
+---
+title: "Ethics in Data Visualization"
+author: "Cheng Peng"
+date: ''
+output:
+  beamer_presentation: 
+    slide_level: 3
+    includes:
+      in_header: wcu-RMD-slide-template.txt
+    theme: Goettingen
+    fonttheme: professionalfonts
+    colortheme: beaver
+    fig_width: 3
+    fig_height: 2
+  slidy_presentation: 
+    fig_width: 4
+    fig_height: 2
+    incremental: yes
+  powerpoint_presentation:
+    toc: yes
+fontsize: 10pt
+subtitle: (A Brief Overview)
+---
