@@ -1,0 +1,16 @@
+---
+title: '<font size = 7 color = "white">Elements of Effective Presentation</font>'
+subtitle: '<img src="img/presenter.png" width=160 height=90>'
+author: '<font size = 5 color = "white"> Cheng Peng </font>'
+institute: '<font size = 6 color = "white">West Chester University of Pennsylvania</font><br> '
+date: ' <font color = "white" size =4> Prepared for<br> </font> <br> <font color = "chocolate" size = 6> STA490: Statistics Capstone </font> <br> <br> <!--font color = "white" size = 3> Slides available at: https://your-RPubs-url AND https://your-GitHub-url</font-->'
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer01.css
+    nature:
+      slideNumberFormat: "%current%"
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+      countIncrementalSlides: true
+---
