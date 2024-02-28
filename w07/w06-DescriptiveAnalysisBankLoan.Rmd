@@ -3,21 +3,24 @@ title: "Descriptive Analysis of Bank Loan Data"
 author: "Cheng Peng"
 date: ""
 output:
-  html_document: 
-    toc: yes
-    toc_depth: 4
-    toc_float: yes
-    fig_width: 6
-    fig_height: 4
-    fig_caption: yes
-    number_sections: yes
-    theme: readable
   pdf_document: 
     toc: yes
     toc_depth: 4
     fig_caption: yes
     number_sections: yes
     fig_width: 5
+    fig_height: 4
+  html_document: 
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+    fig_width: 6
+    number_sections: yes
+    toc_collapsed: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: true
+    theme: readable
     fig_height: 4
   word_document: 
     toc: yes
@@ -79,14 +82,19 @@ h4 { /* Header 4 - and the author and data headers use this too  */
 ```{r setup, include=FALSE}
 # code chunk specifies whether the R code, warnings, and output 
 # will be included in the output files.
-library(knitr)
-library(lessR) 
-knitr::opts_chunk$set(echo = TRUE,     # include code chunk in the output file
-                      warning = FALSE, # sometimes, you code may produce warning messages,
-                                       # you can choose to include the warning messages in
-                                       # the output file. 
-                      result = TRUE    # you can also decide whether to include the output
-                                       # in the output file.
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("lessR")) {
+   install.packages("lessR")
+   library(lessR)
+}
+knitr::opts_chunk$set(echo = TRUE,  
+                      warning = FALSE, 
+                      result = TRUE,
+                      message = FALSE,
+                      comment = NA
                       )   
 ```
 

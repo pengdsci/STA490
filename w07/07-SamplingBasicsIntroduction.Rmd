@@ -15,10 +15,13 @@ output:
     toc_depth: 4
     toc_float: yes
     fig_width: 6
-    fig_height: 4
-    fig_caption: yes
     number_sections: yes
+    toc_collapsed: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: true
     theme: readable
+    fig_height: 4
   word_document: 
     toc: yes
     toc_depth: 4
@@ -83,9 +86,15 @@ if (!require("knitr")) {
    install.packages("knitr")
    library(knitr)
 }
+if (!require("lessR")) {
+   install.packages("lessR")
+   library(lessR)
+}
 knitr::opts_chunk$set(echo = TRUE, 
                       warning = FALSE,  
-                      result = TRUE    
+                      result = TRUE,
+                      message = FALSE,
+                      comment = NA
                       )   
 ```
 
