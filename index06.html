@@ -210,18 +210,22 @@ var sgr_main = {"sgr_site_key":"6LcmTAcaAAAAAEELVElChVbNtpYH8TxjxPvYq9gv"};
         <h5>Assignments</h5>
      <b>Submission Due:</b> <font color = "red">Sunday, 11:30 PM.</font> <br><br>
         
-        <b>EDA and Applications with Bank Loan Data</b> <br>
-       1. Delete all records whose MIS_Status value was missing and convert all variables related to dollar amounts into numerical variables.<br>
+        <b>EDA and Applications with the <font color = "red">Combined</font> Bank Loan Data:</b> <font color = "red">Please read the <a href="w06/w06-DescriptiveAnalysisBankLoan.html"  target="_blank" 
+                   onclick="window.open('w06/w06-DescriptiveAnalysisBankLoan.html','name','width=1200,height=700')"><link-btn>CLASS NOTE</link-btn></a> and make sure you fully understand the data set before working on the following assignment items.</font> <br>
         
-       2. Choose a categorical variable and combine its sparse categories with appropriate categories so that the refined categorical variable with fewer categories is interpretable. The redefined categorical variable is suggested to have about 15 categories.<br>
+       1. Delete all records whose MIS_Status value was missing.<br>
         
-       3. Calculate the default rates of corresponding categories in the redefined categorical variable. Note the value CHGOFF of MIS_Status is defined to be loan default.<br>
+       2. Change all currency format variables (<font color="red">DisbursementGross, BalanceGross,  ChgOffPrinGr,  GrAppv,  SBA_Appv</font>) to the regular numerical variables (i.e., remove dollar sign and comma separator). <br>
         
-       3. Discretize either GrAppv into 5 categories (intervals, buckets) This step is equivalent to splitting the original population into 5 subpopulations.<br>
+       3. Choose any one of the categorical variables in the data set and combine its sparse categories with appropriate categories in a meaningful way so that the refined categorical variable with fewer categories is meaningful and interpretable (<font color ="red">Consider the example of course grade, if grade <b>F</b> is a sparse category, the only meaningful way of combining with other category is <b>D</b></font>).  The re-defined categorical variable is suggested to have about 15 or fewer than categories.<br>
         
-       4. Draw the density curves of SBA_Appv for each of the 5 subpopulations defined in 3) and place them on the same plot. The plot is should be similar to <a href="w06/img/MultipleDensityCurves.png"  target="_blank" 
+       4. Calculate the default rates of corresponding categories in the above redefined categorical variable. Note the value CHGOFF of MIS_Status is defined to be loan default. <font color = "red">That is, the default rate is the percentage of <b>CHGOFF</b> in MIS_Status.</font><br>
+        
+       5. Discretize variable <b>GrAppv</b> into 5 categories (intervals, buckets). This step is equivalent to splitting the original population into 5 subpopulations.<br>
+        
+       6. Draw the density curves of <b>SBA_Appv</b> for each of the 5 sub-populations defined in 5) and place them on the same plot. The plot should be similar to <a href="w06/img/MultipleDensityCurves.png"  target="_blank" 
                    onclick="window.open('w06/img/MultipleDensityCurves.png',
-           'name','width=1200,height=700')"><link-btn>THIS FIGURE</link-btn></a> 
+           'name','width=700,height=500')"><link-btn>THIS FIGURE</link-btn></a> 
    </td>
   
   <td><img class="dt-top-logo" src="img/placeholder.jpg" width="150" height="80"/></td>
