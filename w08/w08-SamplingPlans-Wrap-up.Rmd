@@ -5,11 +5,11 @@ date: " "
 output:
   html_document: 
     toc: yes
-    toc_float: yes
     toc_depth: 4
-    fig_width: 6
-    fig_height: 4
-    fig_caption: yes
+    toc_float: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
     number_sections: yes
     theme: readable
   word_document: 
@@ -79,12 +79,11 @@ if (!require("knitr")) {
    library(knitr)
 }
 
-knitr::opts_chunk$set(echo = FALSE,       
+knitr::opts_chunk$set(echo = TRUE,       
                       warnings = FALSE,   
                       results = TRUE,   
                       message = FALSE,
-                      fig.align='center', 
-                      fig.pos = 'ht')
+                      comment = NA)
 ```
 
 
@@ -135,14 +134,14 @@ The course web page provides two useful tables. One of the tables <https://sta49
 
 For the convenience of referring to these tables, I include these two tables in this document.
 
-```{r echo=FALSE, fig.cap="List of all industries using the first two digits of the NAICS code", fig.width=3, fig.length=5,      fig.align = "center"}
+```{r fig.cap="List of all industries using the first two digits of the NAICS code", fig.width=3, fig.length=5,      fig.align = "center"}
 include_graphics("img/w08-NAICS-Categories.jpg")
 ```
 
 
 
 
-```{r echo=FALSE, fig.cap="List of all industries using the first two digits of the NAICS code and the corresponding loan default rates", fig.width=3, fig.length=5,      fig.align = "center"}
+```{r fig.cap="List of all industries using the first two digits of the NAICS code and the corresponding loan default rates", fig.width=3, fig.length=5,      fig.align = "center"}
 include_graphics("img/w08-NAICS-Default-Rates.jpg")
 ```
 Next, we explore the frequency distribution of the 2-digit NAICS codes and decide the potential combinations of categories with a small size.
@@ -284,7 +283,7 @@ kable(t(strata.size))
 
 When coding, we use a loop to take simple random samples from each stratum and then combine them to get the stratified sample.
 
-```{r }
+```{r}
 strata.sample = study.pop[1,]    # create a reference data frame
 strata.sample$add.id = 1         # add a temporary ID to because in the loop
 # i =2                           # testing a single iteration
@@ -484,6 +483,7 @@ legend("topright", c("Pop", "SRS", "Sys", "Str"), lty=1:4, col=2:5, pch=c(16,17,
 
 ```
 
+
 There's a lot of ink here that doesn't convey information relevant to the main point we're trying to make. 
 
 * **Grey background**: not only does it provide absolutely no information. it's also unsightly. After we remove it, we will likely have to darken some of the lines.
@@ -503,6 +503,7 @@ There's a lot of ink here that doesn't convey information relevant to the main p
 * **Color coding**:  Avoid using use green and red colors in the same graphic to represent different objects. More than 99% of all color-blind people are suffering from a red-green color vision deficiency.
 
 It's easy to make a graph that looks cleaner and has a higher ratio of information-to-total ink:
+
 
 
 ```{r fig.width=10, fig.height=4,  caption="Improved graphics"}
@@ -542,6 +543,8 @@ legend(2, 45, c("Population", "Simple Random Sampling", "Systematic Sampling", "
 
 ```
 
+Removing the gray background will make the graph cleaner.  
+
 ```{r fig.width=10, fig.height=4,  caption="Improved graphics"}
 n=length(default.rate.pop)
 plot(NULL, xlim=c(0,n), ylim=c(0, 50), 
@@ -571,41 +574,6 @@ legend(2, 45, c("Population", "Simple Random Sampling", "Systematic Sampling", "
 
 ```
 
-```{r fig.width=10, fig.height=4,  caption="Improved graphics"}
-n=length(default.rate.pop)
-plot(NULL, xlim=c(0,n), ylim=c(0, 50), 
-     xlab="Industry Classification Code", 
-     ylab ="Default Rates (Percentage)", axes=FALSE) # empty plot
-# Light gray background
-rect(par("usr")[1], par("usr")[3],
-     par("usr")[2], par("usr")[4],
-     col = "white")
-
-# Add white grid
-grid(nx = NULL, ny = NULL,
-     col = "white", lwd = 1)
-title("Comparison of Industry-specific Default Rates Based on Random Samples")
-points(1:n, as.vector(default.rate.pop), pch=16, col="darkmagenta", cex = 0.8)
-lines(1:n, as.vector(default.rate.pop),  lty=1, col="darkmagenta", cex = 0.8)
-#
-points(1:n, as.vector(default.rate.srs), pch=17, col="chartreuse4", cex = 0.8)
-lines(1:n, as.vector(default.rate.srs), lty=1, col="chartreuse4", cex = 0.8)
-#
-points(1:n, as.vector(default.rate.sys), pch=19, col="darkblue", cex = 0.8)
-lines(1:n, as.vector(default.rate.sys), lty=1, col="darkblue", cex = 0.8)
-#
-points(1:n, as.vector(default.rate.str), pch=20, col="darkcyan", cex = 0.8)
-lines(1:n, as.vector(default.rate.str), lty=1, col="darkcyan", cex = 0.8)
-#
-axis(1,at=1:n, label=industry.code)
-axis(2, las = 2)
-#
-clr = c("darkmagenta","chartreuse4","darkblue","darkcyan")
-rowMax=apply(str.SRS.pop.rates, 1, max) # max default rate in each industry
-#segments(1:n, rep(0,n), 1:n, rowMax, lty=2, col="lightgray", lwd = 0.5)
-legend(2, 45, c("Population", "Simple Random Sampling", "Systematic Sampling", "Stratified Sampling"), lty=rep(1,4), col=clr, pch=c(16,17,19,20), cex=0.6, bty="n")
-
-```
 
 
 
