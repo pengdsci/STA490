@@ -120,7 +120,7 @@ This is essentially a capstone team project that involves multi-item survey data
 
 # Data Sources
 
-Three data sets are suggested for the team projects.
+Two data sets will be used for the team projects.
 
 ## Employee Turnover Data
 
