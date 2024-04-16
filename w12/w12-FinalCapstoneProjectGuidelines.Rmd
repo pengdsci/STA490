@@ -3,9 +3,6 @@ title: "STA 490 Final Team Project Guidelines"
 author: "Cheng Peng"
 date: "West Chester University"
 output:
-  pdf_document:
-    toc: yes
-    toc_depth: '4'
   html_document:
     toc: yes
     toc_depth: 4
@@ -15,6 +12,9 @@ output:
     smooth_scroll: yes
     number_sections: yes
     theme: united
+  pdf_document:
+    toc: yes
+    toc_depth: '4'
 ---
 
 <style type="text/css">
