@@ -3,18 +3,6 @@ title: 'A Brief Description of Basic Components of A SAP'
 author: "Cheng Peng"
 date: " "
 output:
-  pdf_document: 
-    toc: yes
-    toc_depth: 4
-    fig_caption: yes
-    number_sections: yes
-    fig_width: 3
-    fig_height: 3
-  word_document: 
-    toc: yes
-    toc_depth: 4
-    fig_caption: yes
-    keep_md: yes
   html_document: 
     toc: yes
     toc_depth: 4
@@ -24,6 +12,18 @@ output:
     number_sections: yes
     theme: readable
     fig_height: 4
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
+  pdf_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: yes
+    fig_width: 3
+    fig_height: 3
 editor_options: 
   chunk_output_type: inline
 ---
@@ -157,7 +157,8 @@ In SAP, the proposed statistical analysis must be specified in advance. This sho
 *	Set of primary analysis
 *	Comparisons and significance levels are predefined.
 *	Exploratory data analyses (EDA).
-*	Test your maturity.
+* Specific models to be used (the response variable need to specified) and their alternatives
+* 
 
 # How to develop a statistical analysis plan (SAP)?
 
@@ -183,7 +184,7 @@ The SAP should contain various sample size calculations for different statistica
 
 The SAP should also thoroughly explain the procedures used to analyze and display the study results.
 
-* 	The level of statistical significance to be employed, as well as whether one-tailed or two-tailed tests will be used.
+* The level of statistical significance to be employed, as well as whether one-tailed or two-tailed tests will be used.
 *	Methods for dealing with missing data.
 *	Methods for dealing with outliers.
 *	Methods for estimating points and intervals.
