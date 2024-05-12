@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Intervenable Factors for Employee Turnover</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Alice X." />
+    <meta name="author" content="Josh G." />
+    <meta name="author" content="Josh Z." />
+    <meta name="date" content="2024-05-12" />
+    <script src="w15-StudentCapstonePresentationSample_files/header-attrs/header-attrs.js"></script>
+    <script src="w15-StudentCapstonePresentationSample_files/kePrint/kePrint.js"></script>
+    <link href="w15-StudentCapstonePresentationSample_files/lightable/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Intervenable Factors for Employee Turnover
+]
+.subtitle[
+## With a focus on Big 5 personality traits: logistic regression and analysis
+]
+.author[
+### Alice X.
+]
+.author[
+### Josh G.
+]
+.author[
+### Josh Z.
+]
+.date[
+### 2024-05-12
+]
+
+---
+
+
+
+
+
+
+
+
+
+
+## Table of Contents
+
+.left[
+
+&lt;li&gt; Research Question &lt;/li&gt;
+&lt;br&gt;
+&lt;li&gt; Data Pre-Processing &lt;/li&gt;
+&lt;br&gt;
+&lt;li&gt; Exploratory Analysis &lt;/li&gt;
+&lt;br&gt;
+&lt;li&gt; Logistic Regression Models &lt;/li&gt;
+&lt;br&gt;
+&lt;li&gt; Goodness-of-Fit &lt;/li&gt;
+&lt;br&gt;
+&lt;li&gt; Odds Ratio  &lt;/li&gt;
+&lt;br&gt;
+&lt;li&gt; Results  &lt;/li&gt;
+&lt;br&gt;
+&lt;li&gt; Conclusion &lt;/li&gt;
+
+]
+
+---
+
+## Employee Turnover
+
+-  Defined as the total number of employees that leave a company over a certain time period
+- Can cost the company time, resources, productivity
+- Can be influenced by a number of factors
+    - wages
+    - benefit packages
+    - days of time off
+    - promotions
+    - communication
+    - etc. 
+- The ability to predict turnover rate in a company allows for better future business decisions and avoid unneeded costs
+
+---
+
+## Research Question
+
+Primary question: which combination of intervenable factors consisting on gender, age, wage type, industry, profession, way of travel, source of hire, management, and big five personality of employees in Russia is associated with employee turnover? 
+
+Secondary question: the five personality variables from the big 5 personalities test have an association with employee turnover, and if so, which variables do. 
+
+---
+
+## Data Preprocessing
+
+- 1130 observations
+- 16 variables
+  - stag - standardized measure of an employee's stay at the company
+  - age
+  - event - 1 if employee left, 0 if they stayed
+  - gender - 'm' and 'f' 
+  - industry 
+  - profession
+  - traffic - how the employee came to the company 
+  - coach
+  - head_gender
+  - greywage - Is the employees wages taxed (white) or are their true wages unreported (gray)
+  - way - transportation to work
+  - extraversion
+  - independ - Agreeableness
+  - self control - Conscientiousness
+  - anxiety - Neuroticism
+  - novator - Openness
+
+---
+class: top, center
+# Exploratory Analysis
+
+
+&lt;img src="w15-StudentCapstonePresentationSample_files/figure-html/interactive-scatterplot-matrix-1.png" width="100%" /&gt;
+
+---
+
+--- 
+# Exploratory Analysis
+
+
+&lt;img src="w15-StudentCapstonePresentationSample_files/figure-html/interactive-scatterplot-matrix2-1.png" width="100%" /&gt;
+
+
+---
+class: top, center
+# Exploratory Analysis
+
+
+&lt;img src="w15-StudentCapstonePresentationSample_files/figure-html/EDA-1.png" width="100%" /&gt;
+
+---
+class: top, center
+# Exploratory Analysis
+
+
+&lt;img src="w15-StudentCapstonePresentationSample_files/figure-html/unnamed-chunk-3-1.png" width="100%" /&gt;
+
+
+---
+class: top, center
+# Exploratory Analysis
+
+
+&lt;img src="w15-StudentCapstonePresentationSample_files/figure-html/unnamed-chunk-4-1.png" width="100%" /&gt;
+
+
+---
+
+##Principal Component Analysis
+
+These traits are derived from factor analyses that have repeatedly confirmed their independence and stability across different samples and methods. Further aggregation or reduction of these dimensions might obscure the specific psychological processes and characteristics they represent.
+
+The original development of the Big 5 model involved extensive factor analysis procedures that identified these five factors as providing an optimal balance of comprehensiveness and parsimony in describing personality structure. Further factor analysis or PCA might lead to models that either overfit the data or fail to offer additional practical or theoretical advantages.
+
+Therefore, given the robust empirical support for the Big 5 structure of personality and the concerns about the potential drawbacks of further aggregation through PCA or factor analysis, &lt;b&gt; we did not perform PCA or Factor Analysis in our analysis &lt;/b&gt;
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+(Boyle et al., 1995)
+
+---
+
+## Linearity of log odds 
+
+A key assumption for logistic regression is the linearity of log odds against the predictors. A test was run to check for linearity across the predictors in the dataset. 
+
+&lt;div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; overflow-x: scroll; width:100%; "&gt;&lt;table class="table table-striped" style="width: auto !important; "&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Estimate &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Std. Error &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; z value &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Pr(&amp;gt;|z|) &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5057914 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0352682 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4544940 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1458094 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; stag &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0042445 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0019406 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -2.1871803 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0287294 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; gender &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.2039147 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1767032 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.1539953 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2485021 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; age &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0282269 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0099477 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -2.8375363 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0045463 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; industry2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.4041901 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2403596 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.6816058 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0926453 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; industry3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.6949881 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2234896 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -3.1097112 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0018727 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; industry4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.8979739 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2508461 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -3.5797807 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0003439 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; industry5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.3196459 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2337964 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.3671978 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1715633 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; profession1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7108187 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5165538 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3760786 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1687973 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; profession2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3096102 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3846883 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8048339 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4209155 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; profession3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.2577007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3555193 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.7248570 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4685397 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; profession4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0674923 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4085622 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1651947 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8687908 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; profession5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.1637120 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5489946 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.1197148 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0340301 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; traffic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1440712 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1278180 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.1271589 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2596753 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; coach &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1044114 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0741699 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.4077325 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1592103 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; head_gender &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2432737 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1366734 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.7799641 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0750818 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; greywage &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1864606 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2014140 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9257577 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3545719 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; way1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7040452 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2225129 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.1640639 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0015558 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; way2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7544207 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2401262 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.1417671 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0016793 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Extraversion &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0312104 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0483825 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.6450773 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5188771 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Agreeableness &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0371932 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0490584 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7581421 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4483659 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Conscientiousness &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0325445 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0482307 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.6747674 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4998236 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Neuroticism &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0584022 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0493167 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.1842277 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2363229 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Openness &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0051041 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0406373 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1256013 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9000476 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/div&gt;
+
+Some variables have significant p-values, and therefore violations of linearity
+
+---
+
+## Plots
+
+The three variables with significant p-values were plotted against the log odds 
+
+&lt;img src="w15-StudentCapstonePresentationSample_files/figure-html/unnamed-chunk-6-1.png" width="100%" /&gt;
+
+Weak correlations, but no striking violations to assumption of linearity or obvious curvature. No transformation.
+
+--- 
+## Logistic Regression
+
+- reponse variable: event
+- `stepAIC()` function of the MASS package used for model selection
+- backwards stepwise selection done from the full model using AIC values to choose predictors
+- 2 models created: one for demographic predictors and one for big5 personality traits
+
+---
+## Logistic Regression: Demographic Predictors
+
+- 9 total predictors for full model
+  - stag
+  - gender
+  - age
+  - industry
+  - profession
+  - traffic
+  - coach
+  - head_gender
+  - greywage
+  - way
+  
+---
+  
+## Summary Inferential Statistics for Full  Model
+
+&lt;div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; margin-bottom: 20px;overflow-y: scroll; height:400px; overflow-x: scroll; width:100%; "&gt;&lt;table class="table table-striped" style="width: auto !important; "&gt;
+&lt;caption&gt;Summary of Logistic Regression Model&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Estimate &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Std. Error &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; z value &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Pr(&amp;gt;|z|) &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5057914 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0352682 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4544940 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1458094 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; stag &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0042445 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0019406 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -2.1871803 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0287294 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; gender &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.2039147 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1767032 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.1539953 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2485021 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; age &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0282269 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0099477 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -2.8375363 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0045463 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; industry2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.4041901 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2403596 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.6816058 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0926453 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; industry3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.6949881 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2234896 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -3.1097112 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0018727 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; industry4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.8979739 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2508461 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -3.5797807 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0003439 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; industry5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.3196459 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2337964 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.3671978 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1715633 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; profession1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7108187 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5165538 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3760786 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1687973 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; profession2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3096102 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3846883 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8048339 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4209155 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; profession3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.2577007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3555193 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.7248570 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4685397 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; profession4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0674923 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4085622 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1651947 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8687908 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; profession5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.1637120 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5489946 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.1197148 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0340301 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; traffic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1440712 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1278180 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.1271589 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2596753 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; coach &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1044114 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0741699 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.4077325 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1592103 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; head_gender &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2432737 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1366734 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.7799641 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0750818 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; greywage &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1864606 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2014140 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9257577 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3545719 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; way1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7040452 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2225129 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.1640639 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0015558 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; way2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7544207 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2401262 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.1417671 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0016793 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Extraversion &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0312104 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0483825 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.6450773 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5188771 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Agreeableness &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0371932 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0490584 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7581421 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4483659 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Conscientiousness &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0325445 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0482307 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.6747674 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4998236 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Neuroticism &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0584022 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0493167 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.1842277 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2363229 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Openness &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0051041 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0406373 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1256013 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9000476 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/div&gt;
+
+---
+## Stepwise AIC Algorithm for Stepwise Model
+
+- A stepwise function that chooses predictors based off AIC values was utilized in the creation of the stepwise model.
+
+- Backwards stepwise selection beginning from the full model. 
+
+- Removed the variables of gender, industry, profession, traffic, and greywage.
+
+---
+## Summary Inferential Statistics for Stepwise Model
+
+&lt;div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; margin-bottom: 20px;overflow-y: scroll; height:400px; overflow-x: scroll; width:100%; "&gt;&lt;table class="table table-striped" style="width: auto !important; "&gt;
+&lt;caption&gt;Summary of Logistic Regression Model&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Estimate &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Std. Error &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; z value &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Pr(&amp;gt;|z|) &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5554540 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5536105 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0033299 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3157017 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; stag &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0046201 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0019085 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -2.4208135 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0154858 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; gender &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.2470710 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1684168 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.4670207 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1423704 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; age &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0271824 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0097113 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -2.7990512 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0051253 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; industry2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.4085437 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2386349 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.7120033 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0868961 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; industry3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.6995080 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2219994 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -3.1509460 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0016274 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; industry4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.9087529 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2496793 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -3.6396800 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0002730 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; industry5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.3333751 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2315388 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.4398237 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1499173 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; profession1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7499231 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5144513 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4577144 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1449193 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; profession2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3177433 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3833655 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8288262 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4072028 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; profession3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.2501724 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3548537 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.7050014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4808094 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; profession4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0693953 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4072894 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1703834 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8647087 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; profession5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.2009499 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5483599 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.1900761 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0285187 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; coach &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1046803 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0738042 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.4183502 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1560886 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; head_gender &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2547743 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1355873 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.8790425 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0602387 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; way1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7480121 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2204404 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.3932615 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0006907 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; way2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7876752 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2383831 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.3042416 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0009523 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Agreeableness &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0722110 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0371625 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.9431157 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0520022 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/div&gt;
+
+---
+## Goodness of Fit for Full and Reduced Models
+
+Goodness of fit was compared through null deviance residuals, deviance residuals, and AIC
+
+- Null deviance residual: measure of how well the response can be predicted with just the intercept
+- Deviance residual: measure of how well a response can be predicted with a model with p predictors
+- AIC(Akaike information criterion): a single number score which estimates models relatively to other models
+
+&lt;br&gt;
+
+&lt;table&gt;
+&lt;caption&gt;Comparison of global goodness-of-fit statistics&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Deviance.residual &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Null.Deviance.Residual &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; AIC &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; full.model &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1484.675 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1564.977 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1532.675 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; final.model &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1488.218 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1564.977 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1524.218 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;br&gt;
+
+Stepwise model chosen as final model due to smaller p-value and AIC values
+
+---
+## Summary statistics of stepwise model and Odds Ratios
+
+&lt;div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; margin-bottom: 20px;overflow-y: scroll; height:400px; overflow-x: scroll; width:100%; "&gt;&lt;table class="table table-striped" style="width: auto !important; "&gt;
+&lt;caption&gt;Summary Stats with Odds Ratios&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Estimate &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Std. Error &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; z value &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Pr(&amp;gt;|z|) &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; odds.ratio &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5554540 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5536105 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0033299 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3157017 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.7427319 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; stag &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0046201 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0019085 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -2.4208135 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0154858 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9953905 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; gender &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.2470710 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1684168 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.4670207 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1423704 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7810853 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; age &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0271824 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0097113 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -2.7990512 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0051253 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9731837 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; industry2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.4085437 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2386349 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.7120033 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0868961 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6646174 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; industry3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.6995080 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2219994 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -3.1509460 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0016274 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4968297 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; industry4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.9087529 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2496793 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -3.6396800 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0002730 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4030265 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; industry5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.3333751 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2315388 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.4398237 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1499173 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7165014 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; profession1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7499231 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5144513 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4577144 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1449193 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.1168372 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; profession2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3177433 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3833655 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8288262 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4072028 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3740235 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; profession3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.2501724 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3548537 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.7050014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4808094 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7786665 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; profession4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0693953 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4072894 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1703834 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8647087 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9329578 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; profession5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.2009499 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5483599 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.1900761 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0285187 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.3232722 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; coach &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1046803 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0738042 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.4183502 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1560886 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9006124 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; head_gender &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2547743 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1355873 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.8790425 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0602387 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.2901704 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; way1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7480121 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2204404 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.3932615 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0006907 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.1127958 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; way2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7876752 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2383831 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.3042416 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0009523 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.1982799 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Agreeableness &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0722110 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0371625 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.9431157 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0520022 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0748822 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/div&gt;
+
+---
+## Model Diagnostics for Full Model
+
+- No major influential points or outliers were found through looking at standardized residuals and Cook's distance
+- Multicollinearity checked through VIF - values all &lt;2 
+- Linearity of log odds shows similar results as before, only a slight deviance in age
+
+---
+
+## Logistic Regression: Big 5 Predictors
+
+The Big 5 Personality Test is based on the theory that human personality can be defined by independent, separately measurable traits of which the big 5 are the most important. 
+
+- 5 total predictors for full model
+  - Extraversion
+  - Agreeableness
+  - Conscientiousness
+  - Neuroticism
+  - Openness
+  
+---
+
+## Summary of Inferential Statistics for Full Big5 Model
+
+
+&lt;table&gt;
+&lt;caption&gt;Summary of inferential statistics of the full model&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Std. Error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; z value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Pr(&amp;gt;|z|) &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9579344 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8490951 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.1281827 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2592428 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Extraversion &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0264367 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0462196 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.5719801 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5673355 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Agreeableness &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0087620 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0468548 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1870030 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8516583 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Conscientiousness &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0625667 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0463007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.3513122 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1765954 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Neuroticism &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0812600 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0457465 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.7763121 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0756815 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Openness &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0041428 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0391695 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1057661 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9157679 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+---
+
+## Stepwise AIC Algorithm for Stepwise Big5 Model
+
+- The same stepwise function that chooses predictors based off AIC values was utilized in the creation of the stepwise model
+
+- Backwards stepwise selection beginning from the full big5 model. 
+
+- Removed the variables of Extraversion, Agreeableness, and Openness.
+
+---
+
+## Summary of Inferential Statistics for the Stepwise Big5 Model
+
+&lt;table&gt;
+&lt;caption&gt;Summary of inferential statistics of the final model&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Std. Error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; z value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Pr(&amp;gt;|z|) &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.7484104 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2831586 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.643078 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0082156 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Conscientiousness &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0481598 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0303877 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.584847 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1130012 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Neuroticism &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0804365 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0352813 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -2.279864 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0226158 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+## Goodness of fit for two Big5 Models
+
+Goodness of fit was compared through null deviance residuals, deviance residuals, and AIC
+
+- Null deviance residual: measure of how well the response can be predicted with just the intercept
+- Deviance residual: measure of how well a response can be predicted with a model with p predictors
+- AIC(Akaike information criterion): a single number score which estimates models relatively to other models
+
+&lt;br&gt;
+
+&lt;table&gt;
+&lt;caption&gt;Comparison of global goodness-of-fit statistics&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Deviance.residual &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Null.Deviance.Residual &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; AIC &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; full.model.big5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1557.267 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1564.977 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1569.267 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; stepwise.model.big5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1557.937 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1564.977 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1563.937 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;br&gt;
+
+
+Stepwise model chosen as final model due to smaller p-value and AIC values
+
+---
+
+## Summary statistics of final Big5 model and Odds Ratios
+
+&lt;table&gt;
+&lt;caption&gt;Summary Stats with Odds Ratios&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Std. Error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; z value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Pr(&amp;gt;|z|) &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; odds.ratio &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9579344 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8490951 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.1281827 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2592428 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.6063073 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Extraversion &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0264367 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0462196 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.5719801 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5673355 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9739097 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Agreeableness &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0087620 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0468548 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1870030 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8516583 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0088005 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Conscientiousness &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0625667 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0463007 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.3513122 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1765954 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9393504 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Neuroticism &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0812600 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0457465 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.7763121 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0756815 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9219539 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Openness &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.0041428 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0391695 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.1057661 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9157679 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9958658 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+## Model Diagnostics for Big5 
+
+- No major influential points or outliers were found through looking at standardized residuals and Cook's distance
+- Multicollinearity checked through VIF - values all &lt;2 
+- Linearity of log odds gives no significant deviances to assumptions
+
+---
+
+## Conclusion 
+
+While these models are an improvement over using a the intercept, the improvement is not enough to be meaningfully accurate. When tested with a bootstrapped 5-fold CV both the full model and personality trait model returned accuracies of roughly 54%
+
+---
+
+## Shortcomings 
+
+This survey had a number of shortcoming that hindered our ability to properly analyze this data, these include
+
+- Taking from Russian population rather than American one
+- Unknown survey method
+- Big five traits are ultimately poor predictors for retention
+- Missing factors commonly associated with retention, such as wages or PTO.
+
+---
+
+## Recommendation
+
+Further data collection is recommended. A follow up survey based on an American Population and using verified survey methods is required for before any reasonable actions based on this data should be taken
+
+Also conceptually the idea of using personality traits as a predictor of employee turnover should be scrutinized before dedicating any research on this topic.
+
+---
+
+## References
+
+&lt;div style="padding-left: 64px; text-indent: -60px;"&gt;Holiday M. (2021, January 13). What is Employee Turnover &amp; Why It Matters for Your Business. Oracle Netsuite. https://www.netsuite.com/portal/resource/articles/human-resources/employee-turnover.shtml#:~:text=Employee%20turnover%20reference%20to%20the,%E2%80%94that%20is%2C%20involuntary%20turnover&lt;/div&gt; 
+&lt;br&gt;
+&lt;div style="padding-left: 64px; text-indent: -60px;"&gt;Indeed Editorial Team. (2023, February 3). Turnover vs. Attrition: Definitions, Differences and Tips. Indeed.com.  https://www.indeed.com/career-advice/career-development/turnover
+-vs-attrition&lt;/div&gt;
+&lt;br&gt;
+&lt;div style="padding-left: 64px; text-indent: -60px;"&gt;UCI-Machine Learning Repository. (n.d.). Turnover data set [Data set]. https://www.aihr.com
+/wp-content/uploads/2019/10/turnover-data-set.csv&lt;/div&gt;
+&lt;br&gt;
+&lt;div style="padding-left: 64px; text-indent: -60px;"&gt;Boyle, G.J., Stankov, L., Cattell, R.B. (1995). Measurement and Statistical Models in the Study of Personality and Intelligence. In: Saklofske, D.H., Zeidner, M. (eds) International Handbook of Personality and Intelligence. Perspectives on Individual Differences. Springer, Boston, MA. https://doi.org/10.1007/978-1-4757-5571-8_20 &lt;/div&gt;
+&lt;br&gt;
+&lt;div style="padding-left: 64px; text-indent: -60px;"&gt;White, I. R., &amp; Thompson, S. G. (2005). Adjusting for partially missing baseline measurements in randomized trials. Statistics in medicine, 24(7), 993–1007. https://doi.org/10.1002/sim.1981 &lt;/div&gt;
+
+---
+
+## Questions or Comments?
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

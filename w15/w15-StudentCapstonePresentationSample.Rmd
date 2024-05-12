@@ -1,0 +1,636 @@
+---
+title: "Intervenable Factors for Employee Turnover"
+subtitle: "With a focus on Big 5 personality traits: logistic regression and analysis"  
+author: 
+  - "Alice X."
+  - "Josh G."
+  - "Josh Z." 
+date: '`r Sys.Date()`'
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    nature:
+      slideNumberFormat: "%current%"
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+      countIncrementalSlides: true
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(
+  fig.width=9, fig.height=3.5, fig.retina=3,
+  out.width = "100%",
+  cache = FALSE,
+  echo = FALSE,
+  message = FALSE, 
+  warning = FALSE,
+  hiline = TRUE
+)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_duo_accent(
+  primary_color = "#223843",
+  secondary_color = "#e26d5c",
+  inverse_header_color = "#eff1f3"
+)
+```
+
+```{r}
+   library(tidyverse)
+   library(GPArotation)
+   library(psych)
+   library(nFactors)
+   library(rmarkdown)
+   library(knitr)
+   library(parameters)
+   library(corrplot)
+   library(ggcorrplot)
+   library(ggfortify)
+   library(dplyr)
+   require(ggplot2)
+   require(GGally) 
+   require(CCA)
+   require(olsrr)
+   require(cocron)
+    library(MASS)
+   library(psych)
+  library(car)
+  library(caret)
+  library(MASS)
+  library(gridExtra)
+  library(kableExtra)
+
+```
+
+```{r}
+turnover_data <- read.csv("https://raw.githubusercontent.com/JZhong01/STA490/main/Week15/turnover-data-set.csv")
+
+turnover_data2 <- turnover_data
+
+turnover_data2$gender <- ifelse(turnover_data2$gender == "m", 1, 0)
+#male = 1, female = 0
+
+turnover_data2$greywage <- ifelse(turnover_data2$greywage == "grey", 1, 0) #grey = 1, white = 0
+
+turnover_data2$head_gender <- ifelse(turnover_data2$head_gender == "m", 1, 0)
+#male = 1, female = 0
+
+turnover_data2 <- turnover_data2 %>%
+  mutate(way = case_when(
+    way == "foot" ~ 0,
+    way == "bus"  ~ 1,
+    way == "car"  ~ 2
+  ))
+#by foot = 0, by bus = 1, by car = 2
+
+turnover_data2 <- turnover_data2 %>%
+  mutate(coach = case_when(
+    coach == "no" ~ 0,
+    coach == "yes"  ~ 1,
+    coach == "my head"  ~ 2
+  ))
+#no coach = 0, non-boss coach = 1, boss was coach = 2
+
+
+turnover_data2 <- turnover_data2 %>%
+  mutate(industry = case_when(
+      industry %in% c("Banks", "RealEstate", "Insurance") ~ 1,
+      industry %in% c("manufacture", "Building", "PowerGeneration") ~ 2,
+      industry %in% c("Retail", "HoReCa", "Telecom") ~ 3,
+      industry %in% c("IT", "Consult", "Telecom") ~ 4,
+      TRUE ~ 5
+  )) 
+#Grouped into 5 aggregate industries: Finance (1), Industrial (2), Commercial (3), Tech (4), Other (5)
+
+turnover_data2 <- turnover_data2 %>%
+  mutate(profession = case_when(
+    profession %in% c("Accounting", "Finan?e", "Law") ~ 1,
+    profession %in% c("Sales", "Marketing", "BusinessDevelopment", "Commercial") ~ 2,
+    profession %in% c("HR", "PR") ~ 3,
+    profession %in% c("Engineer", "IT", "Consult") ~ 4,
+    profession %in% c("Teaching", "manage") ~ 5,
+    profession == "etc" ~ 0
+))
+
+#Grouped into 6 aggregate professions: Finance/Legal (1), Sales/Marketing (2), Human/Public Relations (3), Technical (4), Education & Management (5), Other (0) 
+
+
+turnover_data2 <- turnover_data2 %>%
+  rename(Agreeableness = independ, Extraversion = extraversion, Conscientiousness = selfcontrol, Neuroticism = anxiety, Openness = novator)
+#Rename Big 5 Personalities 
+
+
+
+turnover_data2 <-turnover_data2 %>%
+  mutate(traffic = case_when(
+    traffic %in% c("KA", "advert", "recNErab", "referal", "youjs")~ 1,
+    traffic %in% c("empjs", "friends", "rabrecNErab") ~ 0
+     )
+)
+
+turnover_data2$profession <- as.factor(turnover_data2$profession)
+turnover_data2$industry <- as.factor(turnover_data2$industry)
+turnover_data2$way <- as.factor(turnover_data2$way)
+
+```
+
+## Table of Contents
+
+.left[
+
+<li> Research Question </li>
+<br>
+<li> Data Pre-Processing </li>
+<br>
+<li> Exploratory Analysis </li>
+<br>
+<li> Logistic Regression Models </li>
+<br>
+<li> Goodness-of-Fit </li>
+<br>
+<li> Odds Ratio  </li>
+<br>
+<li> Results  </li>
+<br>
+<li> Conclusion </li>
+
+]
+
+---
+
+## Employee Turnover
+
+-  Defined as the total number of employees that leave a company over a certain time period
+- Can cost the company time, resources, productivity
+- Can be influenced by a number of factors
+    - wages
+    - benefit packages
+    - days of time off
+    - promotions
+    - communication
+    - etc. 
+- The ability to predict turnover rate in a company allows for better future business decisions and avoid unneeded costs
+
+---
+
+## Research Question
+
+Primary question: which combination of intervenable factors consisting on gender, age, wage type, industry, profession, way of travel, source of hire, management, and big five personality of employees in Russia is associated with employee turnover? 
+
+Secondary question: the five personality variables from the big 5 personalities test have an association with employee turnover, and if so, which variables do. 
+
+---
+
+## Data Preprocessing
+
+- 1130 observations
+- 16 variables
+  - stag - standardized measure of an employee's stay at the company
+  - age
+  - event - 1 if employee left, 0 if they stayed
+  - gender - 'm' and 'f' 
+  - industry 
+  - profession
+  - traffic - how the employee came to the company 
+  - coach
+  - head_gender
+  - greywage - Is the employees wages taxed (white) or are their true wages unreported (gray)
+  - way - transportation to work
+  - extraversion
+  - independ - Agreeableness
+  - self control - Conscientiousness
+  - anxiety - Neuroticism
+  - novator - Openness
+
+---
+class: top, center
+# Exploratory Analysis
+
+
+```{r interactive-scatterplot-matrix, echo=FALSE}
+num.var <- c("gender", "greywage", "head_gender", "way", "coach", "industry", "profession", "traffic")
+
+# Subset the data to include only these variables
+num.dat <- turnover_data2[, num.var]
+
+# Generate pairwise panels with correlation, density plots, and ellipses
+pairs.panels(num.dat, 
+             method = "pearson",  # Correlation method
+             hist.col = "#00AFBB",  # Histogram color
+             density = TRUE,  # Show density plots
+             ellipses = TRUE,  # Show correlation ellipses
+             stars = TRUE)  # Show significance stars
+
+```
+
+---
+
+--- 
+# Exploratory Analysis
+
+
+```{r interactive-scatterplot-matrix2, echo=FALSE}
+num.var <- c("Extraversion", "Conscientiousness", "Neuroticism", "Agreeableness", "Openness")
+
+# Subset the data to include only these variables
+num.dat <- turnover_data2[, num.var]
+
+# Generate pairwise panels with correlation, density plots, and ellipses
+pairs.panels(num.dat, 
+             method = "pearson",  # Correlation method
+             hist.col = "#00AFBB",  # Histogram color
+             density = TRUE,  # Show density plots
+             ellipses = TRUE,  # Show correlation ellipses
+             stars = TRUE)  # Show significance stars
+
+```
+
+
+---
+class: top, center
+# Exploratory Analysis
+
+
+```{r EDA}
+
+par(mfrow=c(1,2))
+
+hist(turnover_data2$stag, xlab = "Experience", main = "Histogram of Relevant Experience")
+hist(turnover_data2$age, xlab = "Age", main = "Histogram of Employee Ages")
+
+
+
+```
+
+---
+class: top, center
+# Exploratory Analysis
+
+
+```{r}
+
+par(mfrow = c(1,2))
+hist(turnover_data2$Extraversion, xlab = "Score", main = "Histogram of Extraversion Scores")
+hist(turnover_data2$Agreeableness, xlab = "Score", main = "Histogram of Agreeableness Scores")
+
+```
+
+
+---
+class: top, center
+# Exploratory Analysis
+
+
+```{r}
+
+par(mfrow = c(1,3))
+hist(turnover_data2$Conscientiousness, xlab = "Score", main = "Histogram of Conscientiousness Scores")
+hist(turnover_data2$Neuroticism, xlab = "Score", main = "Histogram of Neuroticism Scores")
+hist(turnover_data2$Openness, xlab = "Score", main = "Histogram of Openness Scores")
+
+```
+
+
+---
+
+##Principal Component Analysis
+
+These traits are derived from factor analyses that have repeatedly confirmed their independence and stability across different samples and methods. Further aggregation or reduction of these dimensions might obscure the specific psychological processes and characteristics they represent.
+
+The original development of the Big 5 model involved extensive factor analysis procedures that identified these five factors as providing an optimal balance of comprehensiveness and parsimony in describing personality structure. Further factor analysis or PCA might lead to models that either overfit the data or fail to offer additional practical or theoretical advantages.
+
+Therefore, given the robust empirical support for the Big 5 structure of personality and the concerns about the potential drawbacks of further aggregation through PCA or factor analysis, <b> we did not perform PCA or Factor Analysis in our analysis </b>
+
+<br>
+<br>
+<br>
+<br>
+(Boyle et al., 1995)
+
+---
+
+## Linearity of log odds 
+
+A key assumption for logistic regression is the linearity of log odds against the predictors. A test was run to check for linearity across the predictors in the dataset. 
+
+```{r}
+lreg <- glm(event ~ stag + gender + age + industry + profession + traffic + coach + head_gender + greywage + way + Extraversion + Agreeableness + Conscientiousness + Neuroticism + Openness, 
+            data = turnover_data2, 
+            family = binomial(link = "logit"))
+
+# Extracting summary
+summary_df <- summary(lreg)$coefficients  # Coefficients table
+colnames(summary_df) <- c("Estimate", "Std. Error", "z value", "Pr(>|z|)")
+
+# Create a kable and make it scrollable
+kable(summary_df, "html") %>%
+  kable_styling("striped", full_width = F, position = "left") %>%
+  scroll_box(width = "100%", height = "400px")
+
+logodds <- lreg$linear.predictors
+
+```
+
+Some variables have significant p-values, and therefore violations of linearity
+
+---
+
+## Plots
+
+The three variables with significant p-values were plotted against the log odds 
+
+```{r}
+plot.dat <- data.frame(logodds = logodds, age = turnover_data2$age)
+plot.dat1 <- data.frame(logodds = logodds, way = turnover_data2$way)
+plot.dat2 <- data.frame(logodds = logodds, stag = turnover_data2$stag)
+
+
+p1 <- ggplot(plot.dat, aes(x=age, y=logodds)) + geom_point()
+p2 <- ggplot(plot.dat1, aes(x=way, y=logodds)) + geom_point()
+p3 <- ggplot(plot.dat2, aes(x=stag, y=logodds)) + geom_point()
+
+grid.arrange(p1, p2, p3, nrow = 1)
+
+```
+
+Weak correlations, but no striking violations to assumption of linearity or obvious curvature. No transformation.
+
+--- 
+## Logistic Regression
+
+- reponse variable: event
+- `stepAIC()` function of the MASS package used for model selection
+- backwards stepwise selection done from the full model using AIC values to choose predictors
+- 2 models created: one for demographic predictors and one for big5 personality traits
+
+---
+## Logistic Regression: Demographic Predictors
+
+- 9 total predictors for full model
+  - stag
+  - gender
+  - age
+  - industry
+  - profession
+  - traffic
+  - coach
+  - head_gender
+  - greywage
+  - way
+  
+---
+  
+## Summary Inferential Statistics for Full  Model
+
+```{r}
+full.model = glm(event ~ stag + gender + age + industry + profession + traffic + coach + head_gender + greywage + way + Extraversion + Agreeableness + Conscientiousness + Neuroticism + Openness, 
+          family = binomial(link = "logit"),  #  logit(p) = log(p/(1-p))!
+          data = turnover_data2)
+
+full.model_coef <- summary(full.model)$coefficients
+colnames(full.model_coef) <- c("Estimate", "Std. Error", "z value", "Pr(>|z|)")
+
+# Generate a kable object
+kable(full.model_coef, "html", caption = "Summary of Logistic Regression Model") %>%
+  kable_styling("striped", full_width = F, position = "left") %>%
+  scroll_box(width = "100%", height = "400px", extra_css = "overflow-y: scroll; margin-bottom: 20px;")
+
+
+
+```
+
+---
+## Stepwise AIC Algorithm for Stepwise Model
+
+- A stepwise function that chooses predictors based off AIC values was utilized in the creation of the stepwise model.
+
+- Backwards stepwise selection beginning from the full model. 
+
+- Removed the variables of gender, industry, profession, traffic, and greywage.
+
+---
+## Summary Inferential Statistics for Stepwise Model
+
+```{r}
+final.model.forward = stepAIC(full.model,
+                      direction = "backward",   # forward selection
+                      trace = 0   # do not show the details
+                      )
+
+final.model_coef <- summary(final.model.forward)$coefficients
+colnames(final.model_coef) <- c("Estimate", "Std. Error", "z value", "Pr(>|z|)")
+
+# Generate a kable object
+kable(final.model_coef, "html", caption = "Summary of Logistic Regression Model") %>%
+  kable_styling("striped", full_width = F, position = "left") %>%
+  scroll_box(width = "100%", height = "400px", extra_css = "overflow-y: scroll; margin-bottom: 20px;")
+
+```
+
+---
+## Goodness of Fit for Full and Reduced Models
+
+Goodness of fit was compared through null deviance residuals, deviance residuals, and AIC
+
+- Null deviance residual: measure of how well the response can be predicted with just the intercept
+- Deviance residual: measure of how well a response can be predicted with a model with p predictors
+- AIC(Akaike information criterion): a single number score which estimates models relatively to other models
+
+<br>
+
+```{r}
+## Other global goodness-of-fit
+global.measure=function(s.logit){
+dev.resid = s.logit$deviance
+dev.0.resid = s.logit$null.deviance
+aic = s.logit$aic
+goodness = cbind(Deviance.residual =dev.resid, Null.Deviance.Residual = dev.0.resid, AIC = aic)
+goodness
+}
+goodness=rbind(full.model = global.measure(full.model),
+      final.model=global.measure(final.model.forward))
+row.names(goodness) = c("full.model", "final.model")
+kable(goodness, caption ="Comparison of global goodness-of-fit statistics")
+
+```
+
+<br>
+
+Stepwise model chosen as final model due to smaller p-value and AIC values
+
+---
+## Summary statistics of stepwise model and Odds Ratios
+
+```{r}
+model.coef.stats = summary(final.model.forward)$coef
+odds.ratio = exp(coef(final.model.forward))
+out.stats = cbind(model.coef.stats, odds.ratio = odds.ratio)                 
+
+colnames(out.stats) <- c("Estimate", "Std. Error", "z value", "Pr(>|z|)", "odds.ratio")
+
+# Generate a kable object
+kable(out.stats, "html", caption = "Summary Stats with Odds Ratios") %>%
+  kable_styling("striped", full_width = F, position = "left") %>%
+  scroll_box(width = "100%", height = "400px", extra_css = "overflow-y: scroll; margin-bottom: 20px;")
+```
+
+---
+## Model Diagnostics for Full Model
+
+- No major influential points or outliers were found through looking at standardized residuals and Cook's distance
+- Multicollinearity checked through VIF - values all <2 
+- Linearity of log odds shows similar results as before, only a slight deviance in age
+
+---
+
+## Logistic Regression: Big 5 Predictors
+
+The Big 5 Personality Test is based on the theory that human personality can be defined by independent, separately measurable traits of which the big 5 are the most important. 
+
+- 5 total predictors for full model
+  - Extraversion
+  - Agreeableness
+  - Conscientiousness
+  - Neuroticism
+  - Openness
+  
+---
+
+## Summary of Inferential Statistics for Full Big5 Model
+
+
+```{r}
+full.model.big5 = glm(event ~ Extraversion + Agreeableness + Conscientiousness + Neuroticism + Openness, 
+          family = binomial(link = "logit"),  #  logit(p) = log(p/(1-p))!
+          data = turnover_data2)  
+kable(summary(full.model.big5)$coef, 
+      caption="Summary of inferential statistics of the full model")
+
+```
+
+
+---
+
+## Stepwise AIC Algorithm for Stepwise Big5 Model
+
+- The same stepwise function that chooses predictors based off AIC values was utilized in the creation of the stepwise model
+
+- Backwards stepwise selection beginning from the full big5 model. 
+
+- Removed the variables of Extraversion, Agreeableness, and Openness.
+
+---
+
+## Summary of Inferential Statistics for the Stepwise Big5 Model
+
+```{r}
+final.model.big5 = stepAIC(full.model.big5,
+                      direction = "backward",   # forward selection
+                      trace = 0   # do not show the details
+                      )
+kable(summary(final.model.big5)$coef, 
+      caption="Summary of inferential statistics of the final model")
+```
+
+---
+
+## Goodness of fit for two Big5 Models
+
+Goodness of fit was compared through null deviance residuals, deviance residuals, and AIC
+
+- Null deviance residual: measure of how well the response can be predicted with just the intercept
+- Deviance residual: measure of how well a response can be predicted with a model with p predictors
+- AIC(Akaike information criterion): a single number score which estimates models relatively to other models
+
+<br>
+
+```{r}
+## Other global goodness-of-fit
+global.measure=function(s.logit){
+dev.resid = s.logit$deviance
+dev.0.resid = s.logit$null.deviance
+aic = s.logit$aic
+goodness = cbind(Deviance.residual =dev.resid, Null.Deviance.Residual = dev.0.resid,
+      AIC = aic)
+goodness
+}
+goodness=rbind(full.model.big5 = global.measure(full.model.big5),
+      stepwise.model.big5 =global.measure(final.model.big5))
+row.names(goodness) = c("full.model.big5", "stepwise.model.big5")
+kable(goodness, caption ="Comparison of global goodness-of-fit statistics")
+
+```
+
+<br>
+
+
+Stepwise model chosen as final model due to smaller p-value and AIC values
+
+---
+
+## Summary statistics of final Big5 model and Odds Ratios
+
+```{r}
+model.coef.stats = summary(full.model.big5)$coef
+odds.ratio = exp(coef(full.model.big5))
+out.stats = cbind(model.coef.stats, odds.ratio = odds.ratio)                 
+kable(out.stats,caption = "Summary Stats with Odds Ratios")
+
+```
+
+---
+
+## Model Diagnostics for Big5 
+
+- No major influential points or outliers were found through looking at standardized residuals and Cook's distance
+- Multicollinearity checked through VIF - values all <2 
+- Linearity of log odds gives no significant deviances to assumptions
+
+---
+
+## Conclusion 
+
+While these models are an improvement over using a the intercept, the improvement is not enough to be meaningfully accurate. When tested with a bootstrapped 5-fold CV both the full model and personality trait model returned accuracies of roughly 54%
+
+---
+
+## Shortcomings 
+
+This survey had a number of shortcoming that hindered our ability to properly analyze this data, these include
+
+- Taking from Russian population rather than American one
+- Unknown survey method
+- Big five traits are ultimately poor predictors for retention
+- Missing factors commonly associated with retention, such as wages or PTO.
+
+---
+
+## Recommendation
+
+Further data collection is recommended. A follow up survey based on an American Population and using verified survey methods is required for before any reasonable actions based on this data should be taken
+
+Also conceptually the idea of using personality traits as a predictor of employee turnover should be scrutinized before dedicating any research on this topic.
+
+---
+
+## References
+
+<div style="padding-left: 64px; text-indent: -60px;">Holiday M. (2021, January 13). What is Employee Turnover & Why It Matters for Your Business. Oracle Netsuite. https://www.netsuite.com/portal/resource/articles/human-resources/employee-turnover.shtml#:~:text=Employee%20turnover%20reference%20to%20the,%E2%80%94that%20is%2C%20involuntary%20turnover</div> 
+<br>
+<div style="padding-left: 64px; text-indent: -60px;">Indeed Editorial Team. (2023, February 3). Turnover vs. Attrition: Definitions, Differences and Tips. Indeed.com.  https://www.indeed.com/career-advice/career-development/turnover
+-vs-attrition</div>
+<br>
+<div style="padding-left: 64px; text-indent: -60px;">UCI-Machine Learning Repository. (n.d.). Turnover data set [Data set]. https://www.aihr.com
+/wp-content/uploads/2019/10/turnover-data-set.csv</div>
+<br>
+<div style="padding-left: 64px; text-indent: -60px;">Boyle, G.J., Stankov, L., Cattell, R.B. (1995). Measurement and Statistical Models in the Study of Personality and Intelligence. In: Saklofske, D.H., Zeidner, M. (eds) International Handbook of Personality and Intelligence. Perspectives on Individual Differences. Springer, Boston, MA. https://doi.org/10.1007/978-1-4757-5571-8_20 </div>
+<br>
+<div style="padding-left: 64px; text-indent: -60px;">White, I. R., & Thompson, S. G. (2005). Adjusting for partially missing baseline measurements in randomized trials. Statistics in medicine, 24(7), 993–1007. https://doi.org/10.1002/sim.1981 </div>
+
+---
+
+## Questions or Comments?
