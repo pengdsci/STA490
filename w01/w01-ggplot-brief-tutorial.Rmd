@@ -1,0 +1,477 @@
+---
+title: 'A Tutorial on ggplot2 in R'
+author: "Cheng Peng"
+date: " West Chester University"
+output:
+  html_document: 
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+    number_sections: yes
+    toc_collapsed: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    theme: lumen
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
+  pdf_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: yes
+    fig_width: 3
+    fig_height: 3
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{=html}
+
+<style type="text/css">
+
+/* Cascading Style Sheets (CSS) is a stylesheet language used to describe the presentation of a document written in HTML or XML. it is a simple mechanism for adding style (e.g., fonts, colors, spacing) to Web documents. */
+
+h1.title {  /* Title - font specifications of the report title */
+  font-size: 24px;
+  font-weight: bold;
+  color: darkred;
+  text-align: center;
+  font-family: "Gill Sans", sans-serif;
+}
+h4.author { /* Header 4 - font specifications for authors  */
+  font-size: 18px;
+  font-family: system-ui;
+  font-weight: bold;
+  color: navy;
+  text-align: center;
+}
+h4.date { /* Header 4 - font specifications for the date  */
+  font-size: 18px;
+  font-family: system-ui;
+  color: DarkBlue;
+  text-align: center;
+  font-weight: bold;
+}
+h1 { /* Header 1 - font specifications for level 1 section title  */
+    font-size: 20px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: center;
+    font-weight: bold;
+}
+h2 { /* Header 2 - font specifications for level 2 section title */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+    font-weight: bold;
+}
+
+h3 { /* Header 3 - font specifications of level 3 section title  */
+    font-size: 16px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h4 { /* Header 4 - font specifications of level 4 section title  */
+    font-size: 14px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    text-align: left;
+}
+
+body { background-color:white; }
+
+.highlightme { background-color:yellow; }
+
+p { background-color:white; }
+
+</style>
+```
+
+```{r setup, include=FALSE}
+# code chunk specifies whether the R code, warnings, and output 
+# will be included in the output files.
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("tidyverse")) {
+   install.packages("tidyverse")
+library(tidyverse)
+}
+if (!require("plotly")) {
+   install.packages("plotly")
+library(plotly)
+}
+
+knitr::opts_chunk$set(echo = TRUE,        
+                      warning = FALSE,    
+                      results = TRUE,     
+                      message = FALSE,
+                      comment = NA)  
+```
+
+\
+
+\
+
+
+# Introduction
+
+The `ggplot2` package in R is one of the most popular and versatile tools for creating stunning visualizations. It follows the **grammar of graphics** concept, allowing users to layer components of a plot in a structured way. 
+
+`ggplot2` is included as part of the `tidyverse` package collection. When you install and load the `tidyverse` (e.g., `install.packages("tidyverse")` and `library(tidyverse)`), it automatically includes and loads `ggplot2` along with other core packages like `dplyr`, `tidyr`, `readr`, `purrr`, and more.
+
+However, we can also install and load ggplot2 separately if you only need its functionality for data visualization.
+
+
+# Understanding the Grammar of Graphics
+
+The basic structure of a `ggplot` visualization includes:
+
+**Data**: The dataset you want to visualize.
+
+**Aesthetics (aes)**: The mappings of variables to visual properties like x, y, color, size, etc.
+
+**Geometries (geom)**: The type of plot, such as points, lines, bars, etc.
+
+
+
+# Creating Your First Plot
+
+Here is a simple scatter plot using the built-in mtcars dataset:
+
+
+```{r}
+ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+  geom_point() + 
+  ggtitle("A simple scatter plot with ggplot()")
+```
+
+`data = mtcars`: Specifies the dataset.
+
+`aes(x = wt, y = mpg)`: Maps the weight (wt) to the x-axis and miles per gallon (mpg) to the y-axis.
+
+`geom_point()`: Adds points to the plot.
+
+
+# Adding Layers and Customizing
+
+You can layer additional components to enhance your plot. For example:
+
+```{r}
+ggplot(data = mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +
+  geom_point(size = 3) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Car Weight vs. MPG", x = "Weight (1000 lbs)", y = "Miles per Gallon", color = "Cylinders") +
+  ggtitle("A scatter plot \nwith more graphical layers in ggplot") +
+  theme_minimal()+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+`color = factor(cyl)`: Colors the points based on the number of cylinders.
+
+`geom_smooth()`: Adds a linear regression line.
+
+`labs()`: Adds titles and axis labels.
+
+`theme_minimal()`: Applies a clean theme. 
+
+\
+
+**Some Key Elements in them_minima()**
+
+* *Background*
+  + Removes the panel background (no grid-like boxes around the plot).
+  + Uses a white background for the plot.
+
+* *Grid Lines*
+  + Displays only horizontal and vertical grid lines for major axis ticks (no minor grid lines by default).
+  + Grid lines are subtle (gray and thin), ensuring they don't overpower the data visualization.
+
+* *Axes*
+  + Keep axis lines simple and clean (thin gray lines).
+  + Axis ticks are present and minimal.
+  + Axis labels (x and y) are included with a clean font.
+
+* *Text*
+  + Uses a sans-serif font for titles, axis labels, and other text elements by default.
+  + Font sizes are balanced for a professional look.
+
+* *Legend*
+  + Includes a minimalistic legend box.
+  + Legend background is removed, showing only the text and symbols.
+
+* *Titles*
+  + Plot titles and subtitles are included, aligned, and spaced appropriately.
+
+* *Facets*
+  + Facet strips (titles for faceted plots) have no background color or borders, appearing clean and unobtrusive.
+
+\
+
+## Common Geometries
+
+Here are some commonly used geometries:
+
+* Bar Plot 
+
+```{r}
+ggplot(data = mtcars, aes(x = factor(cyl))) +
+  geom_bar() + 
+  ggtitle("A simple gray bar plot")
+```
+
+* Histogram:
+
+```{r}
+ggplot(data = mtcars, aes(x = mpg)) +
+  geom_histogram(binwidth = 5, fill = "blue", color = "black")+
+  ggtitle("A simple histogram using ggplot")
+```
+
+* Line Plot:
+
+```{r}
+ggplot(data = economics, aes(x = date, y = unemploy)) +
+  geom_line(color = "red")+
+  ggtitle("A simple line plot with ggplot")
+```
+
+#  Faceting
+
+Faceting allows you to create multiple plots based on a factor variable:
+
+```{r}
+ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  facet_wrap(~ cyl) +
+  ggtitle("Multi-panel plot in ggplot")
+```
+
+
+# Themes and Customization
+
+You can modify the appearance of your plot using themes:
+
+```{r}
+ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  theme_classic() +
+  ggtitle("Scatter plot using base theme_classic()") + 
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+Here’s an example of using a custom theme in ggplot2:
+
+```{r}
+# Example dataset
+data <- data.frame(
+  x = c("A", "B", "C", "D"),
+  y = c(3, 7, 2, 8)
+)
+
+# Create a plot with a custom theme
+p <- ggplot(data, aes(x = x, y = y)) +
+  geom_col(fill = "steelblue") +
+  labs(
+    title = "Custom Theme Example",
+    x = "Categories",
+    y = "Values"
+  ) +
+  theme_minimal(base_size = 14) +  # Start with a minimal theme
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5, color = "darkblue", size = 16),
+    axis.text = element_text(color = "black"),
+    axis.title = element_text(face = "bold", size = 14),
+    panel.grid.major = element_line(color = "gray80"),
+    panel.grid.minor = element_blank(), # Hide minor gridlines
+    plot.background = element_rect(fill = "lightgray", color = NA),
+    panel.background = element_rect(fill = "white"),
+    legend.position = "none"  # Hide legend if not needed
+  )
+
+# Print the plot
+print(p)
+```
+
+
+Key Features of the Example:
+
+* Base Theme: The `theme_minimal()` is used as a starting point.
+
+* **Customizations**
+  + Title is bold, centered, and colored.
+  + Gridlines and axis titles are styled.
+  + The background is customized with `plot.background` and `panel.background`.
+  + Minor gridlines are removed for simplicity.
+
+* Legend: Hidden as this plot doesn’t need one.
+
+
+# Some Base Themes
+
+
+This example demonstrates how you can tweak a `ggplot` theme to suit your design preferences. There are other base themes like `theme_gray()`, `theme_classic()`, or `theme_bw()` in ggplot2:
+
+## `ggplot1` Default Theme - `theme_gray()`
+
+In ggplot2, the `theme_gray()` is the default theme used for plots. It provides a light gray background with white grid lines, offering good readability and focusing attention on the data. Below are the key elements of `theme_gray()`:
+
+* Background
+
+   + Plot background: Light gray color (#F0F0F0).
+   + Panel background: A slightly lighter gray color (#E6E6E6).
+
+* Grid Lines
+
+   + Major grid lines: White lines for both x and y axes.
+   + Minor grid lines: Thinner white lines for both x and y axes (less prominent than major grid lines).
+
+* Axis Elements
+
+   + Axis text: Black text with default alignment.
+   + Axis title: Bold black text for axis labels.
+   + Axis ticks: Black tick marks.
+
+* Title and Subtitle
+
+   + Plot title: Centered at the top, bold black text.
+   + Subtitle: Slightly smaller, plain black text, positioned below the title.
+
+* Legend
+
+   + Background: Transparent.
+   + Text: Black.
+   + Key: Gray rectangles (matching the panel background).
+   + Position: By default, placed inside the plot area.
+
+* Text Styling
+
+   + Fonts, sizes, and styles (e.g., bold for titles) follow the default ggplot2 settings.
+   + Base size: 11 (modifiable via `theme_gray(base_size = ...)`).
+
+* Facet Elements
+
+   + Facet background: Transparent or light gray.
+   + Facet text: Black, typically aligned to the center.
+
+
+* **Customizing theme_gray()**: To modify or extend its elements, you can:
+
+  + Use it as a starting point: `theme_gray(base_size = 12, base_family = "serif")`.
+  + Combine it with `theme()` for specific changes:
+
+```{r}
+ggplot(data, aes(x, y)) +
+  geom_point() +
+  theme_gray() +
+  theme(panel.grid.major = element_line(color = "blue"))
+```  
+  
+  
+\
+
+## `theme_classic()`
+
+The `theme_classic()` function in the ggplot2 package of R is used to create a minimalistic theme for plots. It provides a clean and simple aesthetic by removing unnecessary elements and emphasizing the plot's data. Here are the key elements of `theme_classic()`:
+
+* Background
+  + The plot background is completely white.
+  + The panel background (behind the plot area) is also white.
+
+* Grid Lines
+  + Major and minor grid lines are removed, both horizontally and vertically.
+  + This gives the plot a cleaner look, focusing on the data points and axes.
+
+* Axis Lines
+  + The x-axis and y-axis lines are retained and drawn in black.
+  + These lines enhance the clarity of the axes without extra clutter.
+
+* Axis Ticks
+  + Ticks on the x and y axes are present and remain black.
+  + The tick marks are short and simple.
+
+* Axis Text
+  + Labels for both axes (tick labels) are displayed in a standard font and positioned close to the axis lines.
+
+* Legend
+  + The legend box is included but has a minimal appearance.
+  + The background is transparent, and unnecessary decorations are removed.
+
+* Text and Title
+  + Plot title, axis labels, and other text elements follow a straightforward and clean typographic style.
+  + Text elements can be customized using additional `theme()` modifications.
+
+* Overall Simplicity
+  + There are no unnecessary borders, shaded regions, or decorative elements, making the data visualization clean and professional.
+  
+  
+This theme is ideal for creating publication-ready figures or when a minimalist design is desired. It emphasizes data over styling while retaining the essential visual elements of the plot.
+
+
+## `theme_bw()`
+
+The `theme_bw()` function in ggplot2 is a pre-defined theme in R used to give plots a clean, black-and-white appearance. It focuses on a minimalistic style, typically useful for publications or presentations where color may not be as important. Key elements of `theme_bw()` include 
+
+* Background 
+  + The panel background is set to white (`panel.background = element_rect(fill = "white")`).
+  + The plot background (`plot.background`) is also white, creating a clean look.
+
+* Gridlines 
+  + Light grey gridlines (`panel.grid.major` and `panel.grid.minor`) are used, which are slightly visible but don’t overwhelm the plot.
+
+* Axis
+  + Axis lines are black (`axis.line = element_line(color = "black")`), which helps define the boundaries of the plot.
+  + Axis text and titles are set to black for clarity.
+
+* Panel Border
+  + The panel has a black border (`panel.border = element_rect(color = "black")`).
+
+* Minimalist Aesthetic 
+  + The overall design removes unnecessary elements, keeping the focus on the data itself.
+
+Legends are placed outside the plot if required and can be styled further, but they are kept simple in `theme_bw()`.
+You can further tweak any of these settings using `theme()` in conjunction with `theme_bw()` if you need more specific customization.
+  
+
+# Saving Your Plot
+
+To save your plot, use the `ggsave()` function:
+
+```{r}
+ggsave("my_plot.png", width = 6, height = 4)
+```
+
+
+# Introducing Interactive Features
+
+`ggplotly()` is a wrapper function from the `plotly package` in R that allows you to convert a `ggplot2` object into an interactive `plotly` object. It takes a static ggplot and makes it interactive by adding tooltips, zoom, and hover functionalities. This is useful when you want to create more dynamic and engaging visualizations based on `ggplot2 syntax` but with the interactivity features provided by `Plotly`. The following is a simple example.
+
+```{r}
+# need to use functions in ggplot2 and plotly
+# library(ggplot2)
+# library(plotly)
+
+# Create a ggplot
+p <- ggplot(mpg, aes(x = displ, y = hwy, color = class)) + 
+  geom_point() +
+  ggtitle("Interactive scatter plot with color-coding")
+
+# Convert to interactive plotly plot
+ggplotly(p)
+```
+
+
+This code will generate a plot that behaves interactively, allowing you to zoom, pan, and hover over data points to see additional information.
+
+
+
+
