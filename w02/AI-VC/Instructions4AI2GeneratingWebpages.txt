@@ -1,0 +1,25 @@
+Create a web-based CV for my job search with the following information
+
+Name & Contact Information
+Professional Summary
+Work Experience
+Education
+Skills & Expertise
+Publications & Research
+Consulting & Advising Work
+Awards & Certifications
+Projects & Portfolio Links
+References
+
+Design preference:
+The navigation panel on the left must have a dark background
+The navigation panel should remain fixed, ensuring it stays visible at all times, even when scrolling up or down.
+No footer section
+Leave enough margin between the navigation panel and the content panel
+Show the portrait in a circle
+The font color on the navigation panel must be white
+Font color on the content panel must be dark
+The font color of the section header must be dark blue
+Font family, Calibri, should be used for the content panel
+Use multi-section layout
+The section separator uses a sky-blue color
