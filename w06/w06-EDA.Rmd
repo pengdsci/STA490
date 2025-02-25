@@ -3,27 +3,28 @@ title: 'Exploratory Data Analysis'
 author: "Cheng Peng"
 date: " "
 output:
-  html_document: 
+  pdf_document: 
     toc: yes
     toc_depth: 4
-    toc_float: yes
-    fig_width: 4
     fig_caption: yes
-    number_sections: yes
-    theme: readable
-    fig_height: 4
+    number_sections: no
+    fig_width: 3
+    fig_height: 3
   word_document: 
     toc: yes
     toc_depth: 4
     fig_caption: yes
     keep_md: yes
-  pdf_document: 
+  html_document: 
     toc: yes
     toc_depth: 4
-    fig_caption: yes
+    toc_float: yes
     number_sections: yes
-    fig_width: 3
-    fig_height: 3
+    toc_collapsed: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    theme: lumen
 editor_options: 
   chunk_output_type: inline
 ---
@@ -36,14 +37,16 @@ editor_options:
 
 h1.title {  /* Title - font specifications of the report title */
   font-size: 24px;
-  color: DarkRed;
+  color: navy;
+  font-weight: bold;
   text-align: center;
   font-family: "Gill Sans", sans-serif;
 }
 h4.author { /* Header 4 - font specifications for authors  */
   font-size: 20px;
   font-family: system-ui;
-  color: DarkRed;
+  font-weight: bold;
+  color: navy;
   text-align: center;
 }
 h4.date { /* Header 4 - font specifications for the date  */
@@ -127,6 +130,15 @@ if (!require("GGally")) {
    install.packages("GGally")
 library(GGally)
 }
+if (!require("plotly")) {
+   install.packages("plotly")
+library(plotly)
+}
+if (!require("cluster")) {
+   install.packages("cluster")
+library(cluster)
+}
+# library(cluster)
 knitr::opts_chunk$set(echo = TRUE,   
                       warning = FALSE,  
                       result = TRUE,    
@@ -150,21 +162,19 @@ The term EDA was coined by John Tukey in the 1970s. According to Tukey: “It (E
 
 Tukey clearly explains the purpose of EDA. In classical statistics, EDA has been primarily used to inspect the distribution of variables and observe patterns to make hypotheses and test (validating). To be more specific, EDA is for
 
-1. inspecting the distribution of variables,
+**1. inspecting the distribution of variables**: 
 
-2. detecting (and/or removing) outliers,
+**2. detecting (and/or removing) outliers**
 
-3. examining the trend of variables
+**3. examining the trend of variables**
 
-4. assess the associations between variables 
+**4. assess the associations between variables** 
 
 The general tools used for EDA in classical statistics are numerical descriptive statistics with basic graphics such as histograms and scatter plots, etc. A cautionary note about EDA is its descriptive nature. EDA is NOT an inferential method.
 
 In Data Science, more EDA tools will be used for feature engineering in order to improve the performance of underlying models and algorithms. This note will systematically outline EDA tools and their applications in both classical statistics and data science.
 
-
 **Working Data Set**
-
 
 For convenience, we use a data set to illustrate the concepts and methods as we proceed. The data set can be found at <https://pengdsci.github.io/datasets/MelbourneHousingMarket/MelbourneHousing.csv>
 
@@ -174,15 +184,34 @@ MelbourneHousePrice = read.csv("https://pengdsci.github.io/datasets/MelbourneHou
 
 \
 
+
+
+
+
+
 # The EDA process
 
-Conducting EDA requires expertise in multiple tools and programming languages. The EDA process can be summed up in three major steps:
+Conducting EDA requires expertise in multiple tools and programming languages and a clean data set obtained from data cleaning and wrangling process.
 
-* Understanding the data
-* Cleaning the data
-* Performing descriptive analysis of the relationship between variables
+The objectives of Exploratory Data Analysis (EDA) are primarily focused on:
 
-## Understanding the data
+**Extracting Insights from the Data**:
+
+* EDA helps uncover patterns, trends, relationships, and structures within the data.
+* It provides a deeper understanding of the dataset, enabling data-driven decision-making.
+* Visualizations and summary statistics are often used to reveal these insights.
+
+**Identifying Anomalies in the Data for Subsequent Fixes**:
+
+* EDA helps detect outliers, missing values, inconsistencies, or errors in the data.
+* Identifying these issues early ensures data quality and prepares the dataset for further analysis or modeling.
+* Anomalies can be addressed through data cleaning, transformation, or imputation.
+
+These two objectives work hand-in-hand to ensure the data is both meaningful and reliable for any downstream tasks, such as modeling or reporting.
+
+
+
+## Understanding the Data
 
 The first step is to import the required libraries and load data to your computer system appropriately. The initial inspection includes
 
@@ -193,13 +222,14 @@ The first step is to import the required libraries and load data to your compute
 
 ## Cleaning the Data
 
-Once the data is successfully loaded, the next step is to perform initial cleaning for the data set such as renaming the columns or the rows using naming conventions. Please keep in mind that changing values of a variable brings wrong information to the data. When possible, we don't change the values of individual variables unless the change is supported by from theory. The most commonly initial cleaning steps include 
+Once the data is successfully loaded, the next step is to perform initial cleaning for the data set such as renaming the columns or the rows using naming conventions. Please keep in mind that changing values of a variable introduces irrelevant information to the data. When possible, we don't change the values of individual variables unless the change is supported by from theory. The most commonly initial cleaning steps include 
 
-* **Check for null values** check for any null values in the variables.
+* **Check for null and missing values** check for any null values in the variables. **Null data** refers to a lack of a value or a *missing value* in a specific field or column. This can happen due to various reasons such as a data entry error, a missing field in the original data source, <font color = "red">or a field that was not applicable to a certain record </font>.
   + If any of the variables in a data set have null values, it can affect the analysis results. 
   + If your data set has missing data, handle them through approaches like imputation, deletion of observations or variables, or using models that can handle missing data.
 
-* **Dropping the redundant data and removing outliers** If any redundant data in the data set that does not add value to the output, we can remove them from the data set. 
+* **Dropping the redundant data** If any redundant data in the data set that does not add value to the output, we can remove them from the data set. <font color = "red">**However**, if the redundant records were generated through certain simulation process such as bootstrap, we should keep them to meet the requirement of certain procedures like power analysis.</font>  
+
 
 ## Analysis of the relationship between variables
 
@@ -210,6 +240,7 @@ The final step in the process of EDA is to analyze the relationship between vari
 * **Visualization**: Visualizations can be used to explore the relationship between variables. This includes scatter plots, heatmaps, etc.
 
 * **Hypothesis testing**: We can performs statistical tests to test hypotheses about the relationship between variables.
+
 
 
 # Tools of EDA and Applications
@@ -270,8 +301,9 @@ We can see We will discuss how to use these observed patterns in feature enginee
 If there exist some groups (data points clustered), we may want to assign an ID for each group to reduce the overall variations of the data. Including this cluster ID will improve the performance of the underlying model. The clustering algorithm uses a lot of computing resources. As an example, we use the well-known iris data set based on the 4 numerical variables.
 
 ```{r fig.align='center'}
-library(cluster)
-ggplot(iris, aes(Petal.Length, Petal.Width)) + geom_point(aes(col=Species), size=4)
+#library(cluster)
+g = ggplot(iris, aes(Petal.Length, Petal.Width)) + geom_point(aes(col=Species), size=4)
+ggplotly(g)
 ```
 
 ```{r fig.align='center'}
@@ -288,7 +320,7 @@ res.hc <- eclust(iris0, "hclust", k = 3)
 ```{r}
 NewIris = iris
 NewIris$Cluster = res.hc$cluster
-kable(NewIris, caption = "Iris with cluster ID being included.")
+kable(head(NewIris), caption = "Iris with cluster ID being included.")
 ```
 
 
@@ -298,6 +330,8 @@ kable(NewIris, caption = "Iris with cluster ID being included.")
 EDA is particularly effective for low-dimensional data. The following discussion will be based on the number and type of variables.  
 
 ## Univariate EDA 
+
+In univariate Exploratory Data Analysis (EDA), the primary goal is to understand the distribution and characteristics of individual variables in a dataset. This step is crucial because it helps identify potential issues or patterns that may require further transformation or preprocessing before applying inferential statistical methods or machine learning models. 
 
 ### Numerical Variable
 
@@ -326,13 +360,13 @@ options(digits = 7)
 bound = round(seq(100000,9000000, length=15),1)
 as.data.frame(table(cut(HousePrice$Price, breaks=bound)))
 ```
-The above frequency table gives a similar distribution as shown in the histogram and the density curve.
 
+The above frequency table gives a similar distribution as shown in the histogram and the density curve.
 
 
 ### Categorical Variable
 
-The commonly used visual techniques for numerical variables are bar charts and pie charts.
+The commonly used visual techniques for numerical variables are bar charts and pie charts. 
 
 ```{r, fig.align='center', fig.width=8, fig.height=5}
 par(mfrow=c(1,2))
@@ -342,21 +376,47 @@ pie(freq.tbl, xlab="Number of Bedrooms", ylab = "Counts", main="Distribution of 
 
 ```
 
+A frequency table is also considered as a visual tool to display the distribution of a categorical variables
+
 ```{r}
 kable(as.data.frame(table(HousePrice$Bedroom2)))
 ```
 
 
+<font color = "red">**A cautionary note the use of pie charts** </font>:  3D pie charts can create visual distortions that make it difficult to accurately interpret the data. Here's why they should generally be avoided:
 
+* **Perspective Distortion**: The 3D effect skews the angles and areas of the slices, making some slices appear larger or smaller than they actually are. This can mislead viewers about the proportions.
+* **Occlusion**: Slices at the back of the pie chart can be partially or fully hidden by slices in the front, making it hard to see all the data.
+* **Tilted View**: The tilted angle can make it challenging to compare the sizes of slices, especially those that are close in value.
+* **Unnecessary Complexity**: 3D effects add no meaningful information to the chart and can distract from the data itself.
 
 
 ## Two Variables
 
-Three different cases involve two variables.
+Exploratory Data Analysis (EDA) with two variables aims to understand the relationship between them. Depending on the nature of the variables (categorical or numerical), the approach to assessing their relationship will differ. The following subsection outline the three common cases involving two variables and how to analyze their relationships.
 
 ### Two Numeric Variables
 
-In the case of two numeric variables, the key interest is to look at the potential association between the two. The most effective visual representation is a scatter plot.
+When both variables are numerical, the goal is to understand the strength, direction, and form of their relationship.
+
+**Techniques**:
+
+* *Scatterplot*: Visualize the relationship between the two variables. Look for patterns like linearity, curvature, or clusters.
+* *Correlation Coefficient (Pearson, Spearman)*: Quantify the strength and direction of the relationship.
+  + Pearson correlation measures linear relationships.
+  + Spearman correlation measures monotonic relationships (useful for non-linear but consistently increasing/decreasing relationships).
+
+* **Regression Analysis**: Fit a line or curve to model the relationship (e.g., linear regression for linear relationships).
+* **Heatmaps**: Useful for visualizing relationships in *large datasets*.
+
+
+**Questions to Explore**:
+
+* Is there a linear or non-linear relationship?
+* Are there outliers influencing the relationship?
+* Is the relationship strong or weak?
+
+
 
 ```{r fig.align='center'}
 plot(HousePrice$Price, HousePrice$BuildingArea)
@@ -367,7 +427,22 @@ The above scatter plot indicates a linear trend between the house price and the 
 
 ### Two Categorical Variable
 
-For given two categorical variables, we may be interested in exploring whether they are independent. The two-way table and be used to visualize the potential relationship between the two categorical variables.
+When both variables are categorical, the goal is to understand the association or dependence between them.
+
+**Techniques**:
+
+* *Contingency Tables (Cross-Tabulation)*: Summarize the frequency of each combination of categories.
+* *Stacked or Grouped Bar Charts*: Visualize the distribution of one categorical variable across the levels of the other.
+* *Chi-Square Test*: Test for independence between the two categorical variables.
+* *Mosaic Plots*: Visualize the proportions of combinations of categories.
+* *Heatmaps*: Show the frequency or proportion of combinations using color intensity.
+
+**Questions to Explore**:
+
+* Are the two variables independent, or is there an association?
+* Which combinations of categories are most or least frequent?
+* Are there any unexpected patterns or dependencies?
+
 
 ```{r}
 ftable(HousePrice$Bathroom, HousePrice$Bedroom2)
@@ -380,7 +455,23 @@ Note that $\chi^2$ test is sometimes used in EDA.
 
 ### One Numeric Variable and One Categorical Variable
 
-From the modeling point of view, there are two different ways to assess the relationship between a categorical variable and a numerical variable. For example, a ridge plot can be used to visualize the distribution of house prices across the Type of houses.
+The goal is to compare the distribution of the numerical variable across different categories.
+
+**Techniques**:
+
+* *Boxplots*: Compare the distributions of the numerical variable across categories. Look for differences in central tendency, spread, and outliers.
+* *Violin Plots*: Similar to boxplots but show the density of the data.
+* *Bar Charts with Error Bars*: Show the mean or median of the numerical variable for each category, with error bars indicating variability.
+* *ANOVA or t-tests*: Test for statistically significant differences in means across categories.
+* *Histograms or Density Plots*: Compare the distribution of the numerical variable for each category.
+
+**Questions to Explore**:
+
+* Are there significant differences in the numerical variable across categories?
+* What is the shape of the distribution for each category?
+* Are there any outliers or unusual patterns?
+
+From the modeling point of view, there are two different ways to assess the relationship between a categorical variable and a numerical variable. For example, a **ridge plot** can be used to visualize the distribution of house prices across the Type of houses.
 
 ```{r fig.align='center', fig.width=8, fig.height=5, fig.cap="Ridge plot of density distributions house prices."}
 ggplot(HousePrice, aes(x=Price/10000,y=Type,fill=Type))+
@@ -397,13 +488,15 @@ The ridge plot is a visual representation of ANOVA.
 
 \
 
+
 ## Three or More Variables
 
-Visualizing the relationship between three or more variables can be challenging. One has to use visual design elements such as line, shape, negative/white space, volume, value, color, and texture — to represent the values of variables. 
+The objective is to understand the multivariate relationships between them. This involves examining how the variables interact with each other, identifying patterns, detecting outliers, and uncovering potential insights that might not be apparent when analyzing variables in isolation or pairwise.
+
+
+However, visualizing the relationship between three or more variables can be challenging. One has to use visual design elements such as line, shape, negative/white space, volume, value, color, and texture — to represent the values of variables. 
 
 \
-
-
 
 ### Use of Colors, Movement, and Point-size
 
@@ -429,7 +522,35 @@ ggpairs(iris, columns = 1:4, aes(color = Species, alpha = 0.5),
 
 The above enhanced pair-wise scatter plot provides a pair-wise comparison between the four numerical variables across the three species (categorical variable).
 
+### Some Statistical Techniques
+
+Statistical methods help quantify relationships and test hypotheses:
+
+**Correlation Analysis**:
+
+* Compute pairwise correlations between numerical variables.
+* Use a correlation matrix or heatmap to visualize relationships.
+
+**Principal Component Analysis (PCA)**:
+
+* Reduce dimensionality by transforming variables into uncorrelated components.
+* Helps identify the most important variables or patterns.
+
+**Cluster Analysis**:
+
+*Group observations into clusters based on similarity across multiple variables using techniques such as  K-means, hierarchical clustering, DBSCAN.
+
+**Multivariate Regression**:
+
+* Model the relationship between one dependent variable and multiple independent variables to help identify which variables are most influential.
+
+**ANOVA/MANOVA**:
+
+Test for differences in means across groups for multiple variables.
+
+
 \
+
 
 # Roles of Visualization in EDA
 
@@ -438,7 +559,6 @@ The above enhanced pair-wise scatter plot provides a pair-wise comparison betwee
 ## Data Visualization
 
 The primary objective of **data visualization** is to clearly communicate what the data says, help explain trends and statistics, and show patterns that would otherwise be impossible to see. **Data visualization** is used to make consuming, interpreting, and understanding data as simple as possible, and to make it easier to derive insights from data. 
-
 
 
 ## Visual Analytics
@@ -453,6 +573,7 @@ In other words, using visual analytic methods and techniques can enhance (data) 
 ```{r out.height="100%", out.width="100%"}
 knitr::include_app("https://vizhub.healthdata.org/cod/")
 ```
+
 
 # Applications of EDA
 
@@ -471,9 +592,11 @@ Before building any statistical models, EDA allows us to validate assumptions. T
 
 EDA aids in selecting the most relevant variables for modeling. By exploring relationships between variables and their significance in predicting outcomes, one can make informed decisions about feature selection and engineering. 
 
+
 ## EDA for Variable Creation and Redefinition
 
 This is probably the most important application of EDA in creating analytic data sets. 
+
 * **Discretization of Continuous Variables** - Sometimes we may have continuous variables that have multi-modal skewed distributions, we may want to discretize these types of variables to prove model performance and interpretability. For example, in many clinical studies, the age variable is usually defined as age groups for ease of interpretation.
 
 
@@ -495,15 +618,24 @@ grp=c(rep(1,70), rep(2,700), rep(3,150))
 ```
 
 
+**Density Plot of Age**
+
 ```{r fig.align='center', fig.width=5, fig.height=5, fig.cap="The distribution of age."}
 plot(density(age))
 ```
 
+We see the distribution is multi-modal. This indicates that the potential discretization may be useful.
+
+
+**Scattter plot: salary vs age**
 
 ```{r fig.align='center', fig.width=5, fig.height=5, fig.cap="The scatter plot of salary vs age."}
 plot(age, salary)
 ```
 
+The scatter plot shows three distinct groups meaning that group variable is missing. We may want to appropriate methods to bring this information back to the data before performing any inferential analysis. 
+
+**Linear Regression**
 
 ```{r fig.align='center', fig.width=7, fig.height=7, fig.cap="The diagnostic plot of model 1: single predictor age."}
 m0=lm(salary~age)
@@ -512,6 +644,12 @@ plot(m0)
 summary(m0)
 ```
 
+The residual diagnostic plot show the same pattern: missing of important group variable. 
+
+
+**ANOVA**
+
+Assessing equal means across age groups
 
 ```{r fig.align='center', fig.width=7, fig.height=7, fig.cap="The diagnostic plot of model 2: single predictor group."}
 m1=lm(salary~factor(grp))
@@ -521,9 +659,18 @@ summary(m1)
 ```
 
 
+**Multiple Regression**
+
 ```{r  fig.align='center', fig.width=7, fig.height=7, fig.cap="The diagnostic plot of model 2: Both group predictor age."}
 m2=lm(salary~factor(grp)+ age)
 par(mfrow=c(2,2))
 plot(m2)
 summary(m2)
 ```
+
+The above residual plots still show the pattern of groups. <font color = "red">**What to do next?**</font>
+
+
+
+
+
