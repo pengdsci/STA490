@@ -18,11 +18,11 @@ output:
     keep_md: yes
   html_document: 
     toc: yes
-    toc_float: true
     toc_depth: 4
-    fig_width: 6
-    fig_height: 4
-    fig_caption: yes
+    toc_float: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
     number_sections: yes
     theme: readable
 ---
@@ -108,9 +108,11 @@ knitr::opts_chunk$set(echo = TRUE,
                       warnings = FALSE,   
                       results = TRUE,   
                       message = FALSE,
+                      comment = NA,
                       fig.align='center', 
                       fig.pos = 'ht')
 ```
+
 
 
 # Introduction
@@ -149,7 +151,7 @@ A univariate missing pattern indicates a situation where missing data occur only
 
 * If a case is missing at a given time point and then returns at a later follow-up investigation, then the missing data pattern for this subject is referred to as the non-monotone missing data. 
 
-In longitudinal data analysis, the non-monotone missing pattern can cause more problems than the monotone pattern, and thus deserves close attention. There are more missing data patterns such as the latent-factor patterns with variables that are never observed. For each missing data pattern, there are corresponding statistical techniques to handle its impact on the quality of data analysis.
+In longitudinal data analysis, the non-monotone missing pattern can cause more problems than the monotone pattern and thus deserves close attention. There are more missing data patterns such as the latent-factor patterns with variables that are never observed. For each missing data pattern, there are corresponding statistical techniques to handle its impact on the quality of data analysis.
 
 ## Types of Missing Data Mechanisms
 
@@ -161,7 +163,7 @@ Missing data mechanisms concern the relationship between missing data and the va
 * **Missing at Random (MAR)**: If missing data depend on the set of observed responses but are unrelated to the missing values, the missing data are said to be MAR. For example, a registry examining depression may encounter data that are MAR if male participants are less likely to complete a survey about depression severity than female participants. That is, if the probability of completion of the survey is related to their sex (which is fully observed) but not the severity of their depression, then the data may be regarded as MAR.  Since there is a systematic relationship between the propensity of missing values and the observed data, but not the missing data. What it means, is that the missing data can be predicted by other variables in the data set. 
 
 
-* **Missing Not at Random (MNAR)**: There is a pattern in the missing data that affect the primary dependent variables. We can extend the above "depression" example if participants with severe depression are more likely to refuse to complete the survey about depression severity. Since the sources of missing data are themselves unmeasured means that (in general) this issue cannot be addressed in analysis, and the estimate of effect will likely be biased. Missing not at random is the worst-case scenario. We should use MNAR data with caution since these missing data cannot be "recovered".
+* **Missing Not at Random (MNAR)**: There is a pattern in the missing data that affects the primary dependent variables. We can extend the above "depression" example if participants with severe depression are more likely to refuse to complete the survey about depression severity. Since the sources of missing data are themselves unmeasured means that (in general) this issue cannot be addressed in analysis, and the estimate of effect will likely be biased. Missing not at random is the worst-case scenario. We should use MNAR data with caution since these missing data cannot be "recovered".
 
 
 # Methods of Handling Missing Data
@@ -263,9 +265,289 @@ Hmisc is a multiple-purpose package useful for data analysis, high–level graph
 
 impute() function simply imputes missing values using a user-defined statistical method (mean, max, mean). Its default is median. On the other hand, aregImpute() allows the mean imputation using additive regression, bootstrapping, and predictive mean matching.
 
-In bootstrapping, different bootstrap resamples are used for each of the multiple imputations. Then, a flexible additive model (non-parametric regression method) is fitted on samples taken with replacements from original data and missing values (acts as dependent variable) are predicted using non-missing values (independent variable).
+In bootstrapping, different bootstrap resamples are used for each of the multiple imputations. Then, a flexible additive model (non-parametric regression method) is fitted on samples taken with replacements from original data, and missing values (acts as dependent variable) are predicted using non-missing values (independent variable).
 
 Then, it uses predictive mean matching (default) to impute missing values. Predictive mean matching works well for continuous and categorical (binary & multi-level) without the need for computing residuals and maximum likelihood fit.
 
 More functions and updates in Hmisc package can be found at <https://cran.r-project.org/web/packages/Hmisc/Hmisc.pdf> 
+
+
+# MICE Algorithm
+
+
+
+## The MICE Algorithm
+
+The MICE process follows a systematic approach to iteratively impute missing data. It involves creating multiple versions of the data set with plausible estimates for missing values while preserving the relationships among variables. 
+
+In the R library `mice()`, argument `maxit = m` indicates the number of cycles (iterations) of the iterative imputing process. To illustrate this iterative imputation process, we use the following toy data to show the logical process.
+
+
+```{r fig.align='center', out.width="80%", fig.cap="Iterative imputation process in MI."}
+include_graphics("img/MI-Iterative-Imputed-Process.jpg")
+```
+
+
+Below is an algorithm that summarizes the above MICE process.
+
+
+**MICE Algorithm**
+
+```
+Step 1: Initialize imputed values
+        1.1. For each variable with missing values, impute initial values using 
+             a simple imputation method (e.g., mean, median, mode imputation, 
+             or regression).
+        1.2. These initial imputations will be used as starting values in the 
+             iterative process.
+Step 2: Set up the imputation model for each variable
+        2.1. Define the imputation model for each variable with missing data. 
+             The model can be different for each variable and can be based on a 
+             regression model (e.g., linear regression, logistic regression) or 
+             other models depending on the nature of the data.
+        2.2. The variable to be imputed (dependent variable) will be regressed 
+             on other variables in the dataset (predictor variables).
+Step 3: Iterative imputation process
+        3.1. For each iteration t, repeat the following process for each variable 
+             with missing values:
+             3.1.1. For each variable Vi with missing data, use the current values 
+                    of the other variables (including previously imputed values) 
+                    to predict the missing values for Vi.
+             3.1.2. The model for imputation of Vi is fitted to the complete data 
+                    (where no missing values exist for Vi).
+             3.1.3. Impute missing values for Vi based on the model fit in step 
+                    3.1.2, replacing the missing values with predicted values 
+                    (this imputation is stochastic, introducing random variability 
+                    to account for uncertainty).
+        3.2. Repeat this process for all variables with missing data.
+Step 4: Perform multiple imputations
+        4.1. Repeat Step 3 m times (with m being the number of imputations) to 
+             create m different imputed datasets. Each dataset will contain 
+             imputed values for the missing data based on different imputations, 
+             reflecting the uncertainty in the imputation process.
+Step 5: Analyze each imputed dataset
+         5.1. Perform the desired analysis (e.g., regression, hypothesis testing) 
+              on each of the m imputed datasets, yielding m sets of results.
+Step 6: Pool the results using Rubin's Rules
+         6.1. Combine the results from the m datasets using Rubin’s rules:
+              6.1.1. Combine the parameter estimates (e.g., regression coefficients) 
+                     by averaging them across the m datasets.
+              6.1.2. Combine the variance estimates, accounting for both the 
+                     within-imputed dataset variance and the between-imputed 
+                     dataset variance.
+              6.1.3. Calculate the overall standard errors, confidence intervals, 
+                     and p-values based on the combined estimates.
+Step 7: Report on the combined results
+        7.1. Present the final, pooled results, including the combined estimates, 
+             standard errors, and confidence intervals.
+```
+
+The R `mice library` has several functions listed below to extract relevant information in the above algorithm. 
+
+
+`mice()`	Impute the missing data *m* times
+
+`with()`	Analyze completed data sets.
+
+`pool()`	Combine parameter estimates.
+
+`complete()`	Export imputed data.
+
+`ampute()`	Generate missing data.
+
+
+
+## Numerical Example
+
+For ease of illustration, we use the built-in `airquality` data in the subsequent examples.  The first few records in the data are given below.
+
+
+```{r}
+library(mice)
+data <- airquality  # Example dataset with missing values
+data[1:10,]
+```
+
+
+**1. Initialization**
+
+The process begins by assigning initial values to all missing entries in the data set. These initial values are often derived using simple imputation techniques, such as:
+
+* Replacing missing numeric values with the mean or median.
+
+* Filling missing categorical values with the mode.
+
+This step provides a starting point for the iterative process.
+
+
+```{r}
+init <- mice(data, maxit = 0)  # Check initial imputation setup
+init$method                    # View default imputation methods
+```
+
+**2. Imputation Models**
+
+Each variable with missing data is assigned a specific imputation model tailored to its data type. Some commonly used models are listed below.
+
+* **Predictive Mean Matching (pmm)**: For continuous variables.
+* **Logistic Regression (logreg)**: For binary variables.
+* **Polytomous Regression (polyreg)**: For categorical variables.
+* **Proportional Odds Model (polr)**: For ordinal variables.
+
+These models predict missing values based on other observed variables in the data set. As an example, we impute only one data (under the iterative imputing process illustrated earlier).
+
+```{r}
+library(mice)
+dat <- airquality  # Example data set with missing values
+## individual variable 
+imp <- mice(dat, method = c("pmm","pmm", "pmm", "pmm",  "", ""), 
+                 maxit = 10,  # iterating 10 cycles to complete each imputed data set
+                 m = 1,       # generate 1 imputed data set
+                 print=F)     # suppress printouts
+## we use complete() tp view the complete data set.
+complete(imp, action = 1L)[1:10,]  # The default *action = 1L* returns the first
+                                   # imputed (complete) data set.
+```
+
+**3. Iterative Imputation**
+
+The core of the MICE process is its iterative nature:
+
+* Each variable with missing data is treated as a dependent variable, while all other variables act as predictors.
+
+* Missing values for the target variable are imputed using the assigned model.
+
+* This process cycles through all variables with missing data, iteratively refining the imputations.
+
+The iterations continue until the imputed values stabilize, indicating convergence.
+
+
+```{r}
+data <- airquality  # Example data set with missing values
+imp <- mice(data, method = "pmm", # using predictive mean matching (ppm)
+                  maxit = 10,  # pre-specified cycles in the iterative process
+                  m = 2,       # generate 2 imputed data sets
+                  seed = 123,  # setting seed to keep reproducibility of the process
+                  print=F)     # suppress printouts
+complete(imp, action = "broad")[1:10,] # *action = "broad"* combines the two imputed 
+                                # data sets in a wide table. There are other 
+                                # options to lay out the imputed data sets.
+```
+
+**3. Multiple Imputations**
+
+Multiple imputed data sets are created to capture the variability introduced by missing data.
+
+```{r fig.align='center', fig.width=7, fig.height=5, fig.cap="Line plots of means and standard deviations of the two numerical variables with missing values in each imputed data sets."}
+imp5 <- mice(data, method = "pmm", m = 5, maxit = 10, seed = 123, print=F)
+plot(imp5)
+```
+
+Here, m = 5 specifies the number of imputations, and maxit = 10 defines the number of iterations.
+
+
+**4. Analysis and Pooling**
+
+Each imputed data set is analyzed independently, and the results are combined using Rubin’s Rules to produce final estimates and standard errors.
+
+
+```{r}
+model5 <- with(imp5, lm(Ozone ~ Wind + Temp))  # The statistical model to assess
+                                               # the relationship between *Ozone*
+                                               # and *Wind* and *Temp*.
+summary.stats = summary(model5)                # display the regression results of 
+                                               # individual imputed data set.
+summary.stats 
+```
+
+To combine the results, we simply take the average of the corresponding estimated regression coefficients.
+
+```{r}
+summary(pool(model5))
+```
+
+The above-pooled results are calculated based on the formulas on $Q, U, B$, and $T$. The following code illustrates the calculation of the pooled standard error of the intercept.
+
+```{r}
+beta = summary.stats$estimate[seq(1,15,by=3)]  # explicit vector: c(1,4,7,10,13)
+beta.var = (summary.stats$std.error[seq(1,15,by=3)])^2 
+Q = mean(beta)
+U = mean(beta.var)
+B = var(beta)
+T = U + (6/5)*B
+pool.se = sqrt(T)
+cbind(pool.se.intercept = pool.se)
+```
+
+## Advantages of MICE
+
+MICE offers several benefits:
+
+* **Flexibility**: It handles mixed data types (continuous, binary, categorical).
+* **Preservation of Relationships**: Imputation respects the relationships between variables.
+* **Uncertainty Representation**: Multiple imputations account for variability in missing data.
+
+In R, the mice package simplifies MICE implementation, allowing users to customize imputation methods for each variable. The main function `mice()` can detect the missingness of individual variables. If a variable has no missing values, the imputing model will be automatically set to `""`.  
+
+
+```{r}
+imp6 <- mice(data, method = c("pmm", "pmm", "pmm", "pmm", "", ""), 
+            maxit = 5,
+            print=F, 
+            seed = 123)
+imp6$method  
+## without mno specified imputing model
+init <- mice(data,   
+            maxit = 5,
+            print=F, 
+            seed = 123)
+init$method
+```
+
+
+In this example, predictive mean matching (`pmm`) is used for continuous variables. If there is a binary categorical variable with missing values, logistic regression (`logreg`) will be used as the imputed model.
+
+
+## Challenges of MICE
+
+Despite its advantages, MICE comes with challenges:
+
+* **Computational Intensity**: Large datasets and high missingness can increase computation time.
+* **Model Specification**: Poorly chosen imputation models may lead to inaccurate results.
+* **Dependence on Data Quality**: Errors in observed data can propagate through imputations.
+
+In R, proper pre-processing, including outlier handling and transformation, can mitigate some challenges.
+
+
+## Practical Applications of MICE
+
+MICE is widely used in various fields, including healthcare, social sciences, and survey research. For instance:
+
+In clinical trials, MICE imputes missing patient data to preserve the study’s integrity.
+
+In surveys, it handles incomplete responses while maintaining representativeness.
+
+
+```{r}
+# Imputation for a survey dataset
+survey_data <- data.frame(
+  Age = c(25, 30, NA, 35, 40),
+  Gender = c("Male", "Female", "Male", NA, "Female"),
+  Income = c(50000, NA, 60000, 65000, 70000)
+)
+imp <- mice(survey_data, method = c("pmm", "logreg", "pmm"), maxit = 5, 
+            print=F, seed = 123)
+complete_data <- complete(imp)
+print(complete_data)
+```
+
+Here, polyreg is used for categorical variables, showcasing MICE's versatility.
+
+
+## Conclusion
+
+MICE is a powerful and flexible tool for handling missing data, ensuring robust and unbiased statistical analyses. Its iterative process, reliance on tailored imputation models, and ability to account for uncertainty make it a cornerstone of modern data science. With tools like the mice package in R, implementing MICE has become more accessible, enabling analysts to address missing data challenges effectively. While it requires careful implementation, the benefits of using MICE far outweigh its challenges, making it an essential technique for high-quality data analysis.
+
+
+
 
