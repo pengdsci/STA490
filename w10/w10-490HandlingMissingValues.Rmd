@@ -3,19 +3,6 @@ title: "Handling Missing Data in Survey"
 author: "Cheng Peng"
 date: " "
 output:
-  pdf_document:
-    toc: yes
-    keep_tex: false
-    toc_depth: 4
-    fig_caption: yes
-    number_sections: yes
-    fig_width: 5
-    fig_height: 4
-  word_document: 
-    toc: yes
-    toc_depth: 4
-    fig_caption: yes
-    keep_md: yes
   html_document: 
     toc: yes
     toc_depth: 4
@@ -25,6 +12,19 @@ output:
     smooth_scroll: yes
     number_sections: yes
     theme: readable
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
+  pdf_document:
+    toc: yes
+    keep_tex: false
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: yes
+    fig_width: 5
+    fig_height: 4
 ---
 <style type="text/css">
 
@@ -272,11 +272,8 @@ Then, it uses predictive mean matching (default) to impute missing values. Predi
 More functions and updates in Hmisc package can be found at <https://cran.r-project.org/web/packages/Hmisc/Hmisc.pdf> 
 
 
-# MICE Algorithm
 
-
-
-## The MICE Algorithm
+# The MICE Algorithm
 
 The MICE process follows a systematic approach to iteratively impute missing data. It involves creating multiple versions of the data set with plausible estimates for missing values while preserving the relationships among variables. 
 
