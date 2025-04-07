@@ -1,22 +1,8 @@
 ---
-title: "Survey Data Management, Validity, and Reliability "
-author: "A Case Study on Self-compasssion and Gratitude Survey"
+title: "Survey Data Processing, Validity, and Reliability "
+author: "A Case Study"
 date: "Cheng Peng"
 output:
-  html_document: 
-    toc: yes
-    toc_float: true
-    toc_depth: 4
-    fig_width: 6
-    fig_height: 4
-    fig_caption: yes
-    number_sections: yes
-    theme: readable
-  word_document: 
-    toc: yes
-    toc_depth: 4
-    fig_caption: yes
-    keep_md: yes
   pdf_document:
     toc: yes
     keep_tex: false
@@ -25,6 +11,21 @@ output:
     number_sections: yes
     fig_width: 5
     fig_height: 4
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
+  html_document: 
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+    number_sections: yes
+    toc_collapsed: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    theme: lumen
 ---
 
 ```{=html}
@@ -79,33 +80,86 @@ h3 { /* Header 3 - and the author and data headers use this too  */
 
 
 ```{r setup, include=FALSE}
-library(tidyverse)
-library(GPArotation)
-library(psych)
-library(nFactors)
-library(rmarkdown)
-library(knitr)
-library(parameters)
-library(corrplot)
-library(ggcorrplot)
-library(ggfortify)
-require(ggplot2)
-require(GGally) 
-require(CCA)
-require(olsrr)
-require(cocron)
-opts_chunk$set(echo = TRUE, warning=FALSE, results =TRUE)
+if (!require("tidyverse")) {
+   install.packages("tidyverse")
+   library(tidyverse)
+}
+if (!require("GPArotation")) {
+   install.packages("GPArotation")
+   library(GPArotation)
+}
+if (!require("nFactors")) {
+   install.packages("nFactors")
+   library(nFactors)
+}
+if (!require("parameters")) {
+   install.packages("parameters")
+   library(parameters)
+}
+if (!require("corrplot")) {
+   install.packages("corrplot")
+   library(corrplot)
+}
+if (!require("ggcorrplot")) {
+   install.packages("ggcorrplot")
+   library(ggcorrplot)
+}
+if (!require("ggfortify")) {
+   install.packages("ggfortify")
+   library(ggfortify)
+}
+if (!require("ggplot2")) {
+   install.packages("ggplot2")
+   library(ggplot2)
+}
+if (!require("GGally")) {
+   install.packages("GGally")
+   library(GGally)
+}
+if (!require("GGally")) {
+   install.packages("GGally")
+   library(GGally)
+}
+if (!require("CCA")) {
+   install.packages("CCA")
+   library(CCA)
+}
+if (!require("olsrr")) {
+   install.packages("olsrr")
+   library(olsrr)
+}
+if (!require("psych")) {
+   install.packages("psych")
+   library(psych)
+}
+if (!require("cocron")) {
+   install.packages("cocron")
+   library(cocron)
+}
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("pander")) {
+   install.packages("pander")
+   library(pander)
+}
+##
+knitr::opts_chunk$set(echo = TRUE,       
+                      warnings = FALSE,   
+                      results = TRUE,   
+                      message = FALSE,
+                      fig.align='center', 
+                      fig.pos = 'ht')
 ```
 
 
+\
 
 
 # Introduction
 
-The goal of this research project is to measure the level of self-compassion as well as the self-care of BSW and MSW students in a Social Work Program at a
-regional University. We will be using the following two reliable and validated instruments to measure their level of self-compassion and self-care as they
-immerse themselves in the helping profession. We hope to see how the SC of the students correlates to other independent variables i.e. undergrad/grad
-program social work, age, education level, religiosity, spirituality, gender, etc.
+The goal of this research project is to measure the level of self-compassion as well as the self-care of BSW and MSW students in a Social Work Program at a regional University. We will be using the following two reliable and validated instruments to measure their level of self-compassion and self-care as they immerse themselves in the helping profession. We hope to see how the SC of the students correlates to other independent variables i.e. undergrad/grad program social work, age, education level, religiosity, spirituality, gender, etc.
 
 1. The Self-Compassion Scale
 2. The Gratitude Questionnaire
@@ -173,7 +227,7 @@ for (i in 1:6) {
 }
 ```
 
-Since Likert scales of the Q3_3 and Q3_6 were in reverse order in the design. We transform back the usual order and create a new dataset using the same variable names.
+Since Likert scales of the Q3_3 and Q3_6 were in **reverse order** in the design. We transform back the usual order and create a new dataset using the same variable names.
 
 ```{r}
 gratitude.new = gratitude
@@ -307,9 +361,37 @@ new.demographics=data.frame(grp.age, grp.edu, grp.empl, kid.num, home.size, gend
 
 # Validity and Reliability Analyses
 
-This section reports measures of validity and reliability of the two survey instruments.
+This section reports measures of validity and reliability of the two survey instruments: self-compassion and gratitude.
 
-## Self-compassion Index
+
+## Self-compassion Instrument
+
+The Self-Compassion Scale (SCS), developed by Kristin Neff in 2003, is a widely used instrument that measures self-compassion through six key subscales, which can be grouped into two overarching (not opposite) dimensions:
+
+* **Self-Compassion** (positive, adaptive responses): Treating oneself with warmth, recognizing shared human struggles, and maintaining emotional balance.	
+  + Self-Kindness (**SK**)
+    - Item 3: *when something painful happens, I try to take a balanced view of the situation.*
+    - Item 7: *when something upsets me, I try to keep my emotions in balance.*
+  + Common Humanity (**CH**)
+    - Item 5: *I try to see my failings as part of the human condition.*
+    - Item 10: *When I feel inadequate in some way, I try to remind myself that feelings of inadequacy are shared by most people.*
+  + Mindfulness (**MD**)
+    - Item 2: *I try to be understanding and patient towards those aspects of my personality I don't like.*
+    - Item 6: *When I am going through a very hard time. I give myself the caring and tenderness I need.*
+
+
+
+* **Self-Coldness** (negative, harsh responses): Being self-critical, feeling alone in suffering, and obsessing over negative emotions.
+  + Self-Judgment (**SJ**)
+    - Item 11: *I am disapproving and judgmental about my own flaws and inadequacies.*
+    - Item 12: *I am intolerant and impatient towards those aspects of my personality I don't like.*
+  + Isolation (**IS**)
+    - Item 4: *When I am feeling down, I tend to feel like most other people are probably happier than I am.*
+    - Item 8: *When I fail at something that is important to me, I tend to feel alone in my failure.*
+  + Over-Identification (**OI**)
+    - Item 1: *When I fail at something important to me, I become consumed by feelings of inadequacy.*
+    - Item 9: *When I am feeling down, I tend to obsess and fixate on everything that is wrong.*
+
 
 We start with some correlation plots to see the relevance of the PCA procedure on the self-compassion data. 
 
@@ -333,7 +415,7 @@ From the pair-wise correlation plot, we can see that some of the items are rever
 selfcomp = cbind(compassion$Q2_3, compassion$Q2_7, compassion$Q2_10,
                  compassion$Q2_5,compassion$Q2_2,compassion$Q2_6)
 ###
-selcold =  cbind(compassion$Q2_1, compassion$Q2_9, compassion$Q2_4,
+selfcold =  cbind(compassion$Q2_1, compassion$Q2_9, compassion$Q2_4,
                  compassion$Q2_8,compassion$Q2_11,compassion$Q2_12)
 
 ###  MD = Mindfulness, SK = Self-kindness, CH = sense of common humanity
@@ -379,7 +461,7 @@ cronbach.sc = as.numeric(alpha(selfcomp.sub)$total[1])
 CI.sc = cronbach.alpha.CI(alpha=cronbach.sc, n=104, items=6, conf.level = 0.95)
 CI.comp = cbind(LCI = CI.sc[1], alpha = cronbach.sc, UCI =CI.sc[2])
 row.names(CI.comp) = ""
-kable(CI.comp, caption="Confodence Interval of Cranbach Alpha")
+pander(CI.comp, caption="Confodence Interval of Cranbach Alpha")
 ```
 
 
@@ -415,4 +497,5 @@ kable(CI.gratitude, caption="Confodence Interval of Cranbach Alpha")
 ```
 
 
-We can see that Cronbach's alpha is 0.8 with a 95% confidence interval (0.74, 0.86) also suggesting that the items in the Gratitude rating instrument have relatively high internal consistency. 
+We can see that Cronbach's alpha is 0.8 with a 95% confidence interval (0.74, 0.86) also suggesting that the items in the Gratitude rating instrument have relatively high internal consistency.
+
