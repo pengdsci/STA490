@@ -39,17 +39,20 @@ div#TOC li {
 }
 h1.title {
   font-size: 24px;
+  font-weight: bold;
   color: DarkRed;
   text-align: center;
 }
 h4.author { /* Header 4 - and the author and data headers use this too  */
-    font-size: 18px;
+  font-size: 18px;
   font-family: "Times New Roman", Times, serif;
+  font-weight: bold;
   color: DarkRed;
   text-align: center;
 }
 h4.date { /* Header 4 - and the author and data headers use this too  */
   font-size: 18px;
+  font-weight: bold;
   font-family: "Times New Roman", Times, serif;
   color: DarkBlue;
   text-align: center;
@@ -57,12 +60,14 @@ h4.date { /* Header 4 - and the author and data headers use this too  */
 
 h1 { /* Header 3 - and the author and data headers use this too  */
     font-size: 20px;
+    font-weight: bold;
     font-family: "Times New Roman", Times, serif;
     color: darkred;
     text-align: center;
 }
 h2 { /* Header 3 - and the author and data headers use this too  */
     font-size: 18px;
+    font-weight: bold;
     font-family: "Times New Roman", Times, serif;
     color: navy;
     text-align: left;
@@ -71,6 +76,7 @@ h2 { /* Header 3 - and the author and data headers use this too  */
 h3 { /* Header 3 - and the author and data headers use this too  */
     font-size: 16px;
     font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
     color: navy;
     text-align: left;
 }
@@ -162,6 +168,7 @@ knitr::opts_chunk$set(echo = TRUE,
 The goal of this research project is to measure the level of self-compassion as well as the self-care of BSW and MSW students in a Social Work Program at a regional University. We will be using the following two reliable and validated instruments to measure their level of self-compassion and self-care as they immerse themselves in the helping profession. We hope to see how the SC of the students correlates to other independent variables i.e. undergrad/grad program social work, age, education level, religiosity, spirituality, gender, etc.
 
 1. The Self-Compassion Scale
+
 2. The Gratitude Questionnaire
 
 The purpose of our research is to study the perception of self-compassion in social work students and how it can link to self-care as well as success in the social work program and field. This will help provide students with self-care practices during their training to thrive in the profession in the future.

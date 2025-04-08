@@ -26,7 +26,10 @@ output:
     smooth_scroll: yes
     theme: lumen
 ---
+
+```{=html}
 <style type="text/css">
+
 
 div#TOC li {
     list-style:none;
@@ -34,51 +37,51 @@ div#TOC li {
     background-repeat:none;
     background-position:0;
 }
-
 h1.title {
-  font-size: 20px;
+  font-size: 24px;
+  font-weight: bold;
   color: DarkRed;
   text-align: center;
 }
 h4.author { /* Header 4 - and the author and data headers use this too  */
-    font-size: 18px;
+  font-size: 18px;
   font-family: "Times New Roman", Times, serif;
+  font-weight: bold;
   color: DarkRed;
   text-align: center;
 }
 h4.date { /* Header 4 - and the author and data headers use this too  */
   font-size: 18px;
+  font-weight: bold;
   font-family: "Times New Roman", Times, serif;
   color: DarkBlue;
   text-align: center;
 }
+
 h1 { /* Header 3 - and the author and data headers use this too  */
-    font-size: 22px;
+    font-size: 20px;
+    font-weight: bold;
     font-family: "Times New Roman", Times, serif;
     color: darkred;
     text-align: center;
 }
 h2 { /* Header 3 - and the author and data headers use this too  */
     font-size: 18px;
+    font-weight: bold;
     font-family: "Times New Roman", Times, serif;
     color: navy;
     text-align: left;
 }
 
 h3 { /* Header 3 - and the author and data headers use this too  */
-    font-size: 15px;
+    font-size: 16px;
     font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
     color: navy;
     text-align: left;
 }
-
-h4 { /* Header 4 - and the author and data headers use this too  */
-    font-size: 18px;
-    font-family: "Times New Roman", Times, serif;
-    color: darkred;
-    text-align: left;
-}
 </style>
+```
 
 ```{r setup, include=FALSE}
 if (!require("psych")) {
