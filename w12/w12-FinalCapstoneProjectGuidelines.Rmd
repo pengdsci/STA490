@@ -3,6 +3,9 @@ title: "STA 490 Final Team Project Guidelines"
 author: "Cheng Peng"
 date: "West Chester University"
 output:
+  pdf_document:
+    toc: yes
+    toc_depth: '4'
   html_document:
     toc: yes
     toc_depth: 4
@@ -12,9 +15,6 @@ output:
     smooth_scroll: yes
     number_sections: yes
     theme: united
-  pdf_document:
-    toc: yes
-    toc_depth: '4'
 ---
 
 <style type="text/css">
@@ -230,10 +230,6 @@ The steps and requirements for the capstone projects are outlined in the followi
 
 ## Project Teams (based on WCU student ID number)
 
-* **Team One**: Angelo, Ian, Jack;
-* **Team Two**: Jaiden, Samantha, Gianna;
-* **Team Three**: Kyle, Haley, Tyree;
-* **Team Four**: Alice, Joshua G, Joshua Z.
 
 ## Project Topics
 
