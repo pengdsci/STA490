@@ -3,20 +3,6 @@ title: 'A Brief Description of Basic Components of A SAP'
 author: "Cheng Peng"
 date: " "
 output:
-  html_document: 
-    toc: yes
-    toc_depth: 4
-    toc_float: yes
-    fig_width: 4
-    fig_caption: yes
-    number_sections: yes
-    theme: readable
-    fig_height: 4
-  word_document: 
-    toc: yes
-    toc_depth: 4
-    fig_caption: yes
-    keep_md: yes
   pdf_document: 
     toc: yes
     toc_depth: 4
@@ -24,6 +10,21 @@ output:
     number_sections: yes
     fig_width: 3
     fig_height: 3
+  word_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    keep_md: yes
+  html_document: 
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+    number_sections: yes
+    toc_collapsed: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    theme: lumen
 editor_options: 
   chunk_output_type: inline
 ---
@@ -142,64 +143,182 @@ knitr::opts_chunk$set(echo = TRUE,
 Regardless of the research design, statistics are a crucial component of research since it allows the researchers to summarize the collected data and give it to others for interpretation. 
 
 We need a defined analytic plan before we start collecting data. The SAP (statistical analysis plan) will direct us from the beginning to the conclusion, help us summarize and describe the data, and test our hypotheses.
+
+
 The statistical analysis plan (SAP) describes the intended clinical trial analysis. The SAP is a technical document that describes the statistical methods of research analysis, as opposed to the protocol, which represents the analysis.
 
 # What is a statistical analysis plan?
 
-A statistical analysis plan, or SAP, outlines the analytical approach of the quantitative or qualitative data that analyst will gather. 
+**Statistical Analysis Plan (SAP)** is a detailed document specifying how data will be analyzed, ensuring transparency, reproducibility, and minimization of bias.
 
-An SAP contains comprehensive instructions for carrying out statistical analyses and is a more technical document than the study protocol. Although an SAP was initially designed for clinical trials, it can also be helpful in other sorts of research designs.
+* **Data Collection**
+  + **Primary Data**: Clearly define the main outcome variables (e.g., clinical endpoints, survey responses).
+  + **Secondary Data**: Specify additional variables (e.g., covariates, confounders) and their sources.
+  + **Data Handling**: Procedures for missing data, outliers, and transformations (e.g., log-transformation for skewed data).
 
-In SAP, the proposed statistical analysis must be specified in advance. This should contain the following:
+* **Methods of Analysis**
+  + **Descriptive Statistics**: Summarize data (means, proportions, SDs, visualizations).
+  + **Inferential Statistics**: Hypothesis testing, confidence intervals, effect sizes.
+  + **Software/Tools**: Specify (e.g., R, SAS, SPSS) and versions.
 
-*	Endpoints, both primary and secondary.
-*	Methods of analysis
-*	Set of primary analysis
-*	Comparisons and significance levels are predefined.
-*	Exploratory data analyses (EDA).
-* Specific models to be used (the response variable need to specified) and their alternatives
-* 
+* **Primary Analysis**
+  + Define the primary outcome(s) and statistical test(s) (e.g., t-test, ANOVA, regression).
+  + State how the primary hypothesis will be tested (e.g., superiority, non-inferiority).
 
-# How to develop a statistical analysis plan (SAP)?
+* **Comparisons & Significance Levels**
+  + Predefined Comparisons: Subgroup analyses, pairwise comparisons (adjust for multiple testing if needed).
+  + Alpha (Significance Level): Typically 0.05, with justification if adjusted.
+  + **Power Analysis**: Sample size justification based on expected effect size.
 
-In clinical studies, an SAP is more challenging to prepare than a clinical trial protocol, requiring a solid grasp of statistical methods, medical language, and visualization power. It gives comprehensive instructions on statistical programming and reporting of clinical trial outcomes. 
+* **Exploratory Data Analyses (EDA)**
+  + Unplanned analyses to identify patterns (e.g., trends, interactions).
+  + Clarify that results are hypothesis-generating (not confirmatory).
 
-The four forms of SAP listed below are used in a clinical experiment:
+* **Statistical Models**
+  + **Primary Model**: Specify (e.g., linear regression, logistic regression, Cox model).
+  + **Response Variable**: Clearly defined (e.g., blood pressure, survival time).
+  + **Predictors/Covariates**: List included variables and rationale.
+  + **Alternative Models**: Robustness checks (e.g., sensitivity analyses, different covariate adjustments).
 
-*	Data monitoring
-*	interim statistical analysis
-*	Integrated statistical analysis strategy
-*	Plan for statistical analysis of a clinical research
+
 
 # Identifying the need for an SAP
 
-A qualified statistician who has never worked on research should be able to undertake the related analysis if the statistical approach is described in sufficient detail in the study protocol. 
+While a study protocol outlines the general research methodology, an SAP provides a deeper, technical specification of statistical procedures. Here’s when an SAP becomes essential:
 
-However, an SAP would be necessary for high-risk studies that use complex statistical methods, as it would include more technical and in-depth explanations of the methods described in the protocol as well as specific instructions for carrying out the statistical analysis of the primary and secondary variables and other subsequent data.
+* **High-Risk or Regulated Studies**
+  + **Clinical trials** (especially Phase II/III) requiring regulatory approval (FDA, EMA).
+  + **Studies with major clinical/public health implications** (e.g., drug efficacy, policy decisions).
+  + **Pre-specified analyses to prevent bias** (e.g., avoiding selective reporting).
+
+* **Complex Statistical Methods**
+  + **Advanced modeling** (e.g., mixed-effects models, survival analysis, machine learning).
+  + **Adaptive trial designs** (interim analyses, Bayesian methods).
+  + **Handling missing data** (multiple imputation, inverse probability weighting).
+
+* **Large or Multi-Center Studies**
+  + Ensures consistency across sites/analysts.
+  + Prevents post-hoc decisions that could introduce bias.
+
+* **Reproducibility & Transparency**
+  + Needed for peer-reviewed journals (e.g., ICMJE, CONSORT requirements).
+  + Allows an independent statistician to replicate analyses without ambiguity.
 
 
-# Information in the SAP
+
+# Study Protocol vs SAP
+
+The study protocol and SAP are complementary documents that guide different aspects of a research study. While they overlap in some areas, they serve distinct purposes and audiences.
+
+The following table gives some comparisons of the two formal documents:
+
+```{=html}
+<table border="1">
+  <tr>
+    <th> Types </th>
+    <th>Study Protocol</th>
+    <th>Statistical Analysis Plan (SAP)</th>
+  </tr>
+  <tr>
+    <td>Purposes</td>
+    <td> <li> Describes the overall study design, objectives, and methodology.
+         <li> Ensures ethical and scientific validity (used for approvals by IRBs, regulators).
+         <li> Guides the conduct of the study (e.g., recruitment, interventions, data</td>
+    <td> <li> Provides detailed, technical instructions for statistical analysis.
+         <li> Ensures reproducibility, transparency, and minimization of bias.
+         <li> Acts as a binding pre-specification to prevent data-driven decisions (e.g., p-hacking).</td>
+  </tr>
+  
+  <tr>
+    <td>Contents</td>
+    <td> <li> Research question & hypotheses
+         <li> Study population & eligibility criteria
+         <li> Study design (randomized trial, cohort, case-control, etc.)
+         <li> Data collection procedures
+         <li> General statistical approach (but not highly technical details)</td>
+    <td> <li> Exact statistical models (e.g., regression formulas, survival analysis methods)
+         <li> Handling of missing data, outliers, and covariates
+         <li> Primary/secondary endpoint analysis (including multiplicity adjustments)
+         <li> Sensitivity & subgroup analyses
+         <li> Software & code specifications (if applicable)</td>
+  </tr>
+  
+  <tr>
+    <td>Audience</td>
+    <td>Investigators, ethics committees, funding agencies</td>
+    <td>Statisticians, data analysts, regulatory reviewers, peer reviewers </td>
+  </tr>
+</table>
+```
+
+
+The protocol and SAP are interdependent: The protocol sets the rules; the SAP enforces them statistically. Here are some examples:
+
+* **SAP Expands on the Protocol**
+  + **The protocol** states: "We will compare Group A and Group B using regression analysis."
+  + **The SAP** specifies: "A Cox proportional hazards model will be used with covariates X, Y, Z. Hazard ratios will be reported with 95% CIs. Missing data will be handled via multiple imputation."
+
+
+* **SAP is More Rigid (Pre-Specified)**
+  + The protocol may allow minor methodological flexibility.
+  + The SAP locks in analysis details before data unblinding to prevent bias.
+
+* **SAP is Often a Separate Document**
+  + For simple studies, statistical methods may be fully described in the protocol.
+  + For complex/high-stakes studies, a standalone SAP is required (e.g., clinical trials for FDA submission).
+
+
+# Key Information in the SAP
 
 The SAP should contain various sample size calculations for different statistical procedures to achieve certain statistical power and a thorough explanation of the main and any interim analyses used in the data analysis technique. 
 
 The SAP should also thoroughly explain the procedures used to analyze and display the study results.
 
-* The level of statistical significance to be employed, as well as whether one-tailed or two-tailed tests will be used.
-*	Methods for dealing with missing data.
-*	Methods for dealing with outliers.
-*	Methods for estimating points and intervals.
-*	Rules for calculating composite or derived variables, including data-driven definitions and any additional details required to minimize ambiguity.
-*	Baseline and covariate data are used.
-*	Inclusion of randomization factors (if applicable).
-*	Methods for dealing with data from several locations.
-*	Methods for dealing with treatment interactions
-*	Methods for multiple comparisons and subgroup analysis
-*	Interim or sequential analyses are planned.
-*	Computer systems and statistical software packages used to analyze data are specified.
-*	Critical analysis assumptions and sensitivity analyses are checked using these methods.
-*	Tables and figures for presenting study data
-*	The safe population is defined.
+* **Statistical Significance** – The predefined level of statistical significance (e.g., $\alpha$ = 0.05) and whether one-tailed or two-tailed tests will be employed.
+
+* **Missing Data Handling** – Methods for addressing missing data (e.g., imputation techniques, complete-case analysis).
+
+* **Outlier Management** – Approaches for identifying and handling outliers.
+
+* **Estimation Methods** – Techniques for point and interval estimation.
+
+* **Composite/Derived Variables** – Rules for calculating composite or derived variables, including data-driven definitions, with sufficient detail to minimize ambiguity.
+
+* **Baseline and Covariate Data** – How baseline and covariate data will be incorporated into the analysis.
+
+* **Randomization Factors** – Inclusion of randomization factors (if applicable).
+
+* **Multi-sources Data Handling** – Methods for managing data from multiple sources.
+
+* **Multiple Comparisons & Subgroup Analysis** – Methods for adjusting for multiple comparisons and conducting subgroup analyses.
+
+* **Interim/Sequential Analyses** – Details of any planned interim or sequential analyses.
+
+* **Software Specifications** – Identification of the computer systems and statistical software packages used for data analysis.
+
+* **Assumptions & Sensitivity Analyses** – Critical assumptions of the statistical models and methods for conducting sensitivity analyses to validate these assumptions.
+
+* **Data Presentation** – Guidelines for tables and figures to present study data.
+
+* **Safety Population Definition** – A clear definition of the safety population.
+
+* **Model Validation & Alternatives** – Provisions for testing the statistical model and alternative methods if model assumptions are violated.
 
 
-<font color = "red">*\color{red}The SAP must include provisions for testing the statistical model and information on alternative methods if the test assumptions are not satisfied.*</font>
+<font color = "red">*\color{red}The SAP must include provisions for testing the statistical model, along with alternative methods to be used if the model assumptions are not met.*</font>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
