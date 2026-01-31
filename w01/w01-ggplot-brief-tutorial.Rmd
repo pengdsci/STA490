@@ -10,7 +10,7 @@ output:
     number_sections: yes
     toc_collapsed: yes
     code_folding: hide
-    code_download: yes
+    code_download: no
     smooth_scroll: yes
     theme: lumen
   word_document: 
@@ -327,7 +327,7 @@ In ggplot2, the `theme_gray()` is the default theme used for plots. It provides 
 
 * Background
 
-   + Plot background: Light gray color (#F0F0F0).
+   + Plot background: Light gray color (<font style="background-color:black;color: #F0F0F0 "> #F0F0F0 </font>).
    + Panel background: A slightly lighter gray color (#E6E6E6).
 
 * Grid Lines
